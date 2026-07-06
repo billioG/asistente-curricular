@@ -1,6 +1,6 @@
 import { checkAuth, logout } from './config/supabaseClient.js';
 import { generarSeccion } from './config/grokClient.js';
-import { buscarCompetencia } from './services/curriculumService.js';
+import { buscarCompetencia, obtenerGrados, obtenerAreasPorGrado, agruparGradosPorNivel } from './services/curriculumService.js';
 import { validarFormulario } from './services/validation.js';
 import { descargarDocx } from './services/documentGenerator.js';
 import { renderizarPlan, mostrarLoading, mostrarError, limpiarError } from './ui/resultsRenderer.js';
@@ -12,25 +12,80 @@ let ultimoPlan = null;
 async function generarPlan(datos) {
   const competenciaData = await buscarCompetencia(datos.grado, datos.area, datos.competencia);
 
-  const componentes = await generarSeccion({
-    ...datos,
-    competencia: competenciaData.texto,
-    etapa: ETAPAS.EXTRACCION,
-  });
-
   const actividades = await Promise.all(
     MOMENTOS.map((momento) =>
-      generarSeccion({ ...datos, competencia: competenciaData.texto, etapa: ETAPAS.ACTIVIDAD, momento })
+      generarSeccion({
+        grado: datos.grado,
+        area: datos.area,
+        competencia: competenciaData.texto,
+        indicadores: competenciaData.indicadores,
+        etapa: ETAPAS.ACTIVIDAD,
+        momento,
+      })
     )
   );
 
   const rubrica = await generarSeccion({
-    ...datos,
+    grado: datos.grado,
+    area: datos.area,
     competencia: competenciaData.texto,
+    indicadores: competenciaData.indicadores,
     etapa: ETAPAS.RUBRICA,
   });
 
-  return { competencia: competenciaData.texto, componentes, actividades, rubrica };
+  return {
+    grado: datos.grado,
+    area: datos.area,
+    competencia: competenciaData.texto,
+    indicadores: competenciaData.indicadores,
+    actividades,
+    rubrica,
+    fecha: new Date().toLocaleDateString('es-GT'),
+  };
+}
+
+async function poblarGrados() {
+  const gradoSelect = document.getElementById('grado');
+  try {
+    const grados = await obtenerGrados();
+    const grupos = agruparGradosPorNivel(grados);
+    gradoSelect.textContent = '';
+    gradoSelect.appendChild(new Option('Seleccionar...', ''));
+    for (const [nivel, gradosDelNivel] of grupos) {
+      const optgroup = document.createElement('optgroup');
+      optgroup.label = nivel;
+      gradosDelNivel.forEach((grado) => optgroup.appendChild(new Option(grado, grado)));
+      gradoSelect.appendChild(optgroup);
+    }
+  } catch (err) {
+    gradoSelect.textContent = '';
+    gradoSelect.appendChild(new Option('Error al cargar grados', ''));
+    mostrarError(err.message);
+  }
+}
+
+async function poblarAreas(grado) {
+  const areaSelect = document.getElementById('area');
+  if (!grado) {
+    areaSelect.textContent = '';
+    areaSelect.appendChild(new Option('Selecciona un grado primero', ''));
+    areaSelect.disabled = true;
+    return;
+  }
+  areaSelect.disabled = true;
+  areaSelect.textContent = '';
+  areaSelect.appendChild(new Option('Cargando áreas...', ''));
+  try {
+    const areas = await obtenerAreasPorGrado(grado);
+    areaSelect.textContent = '';
+    areaSelect.appendChild(new Option('Seleccionar...', ''));
+    areas.forEach((area) => areaSelect.appendChild(new Option(area, area)));
+    areaSelect.disabled = false;
+  } catch (err) {
+    areaSelect.textContent = '';
+    areaSelect.appendChild(new Option('Error al cargar áreas', ''));
+    mostrarError(err.message);
+  }
 }
 
 async function init() {
@@ -46,6 +101,12 @@ async function init() {
   if (!user) return;
 
   document.getElementById('btnLogout').addEventListener('click', logout);
+
+  poblarGrados();
+
+  document.getElementById('grado').addEventListener('change', (e) => {
+    poblarAreas(e.target.value);
+  });
 
   document.getElementById('formGenerar').addEventListener('submit', async (e) => {
     e.preventDefault();

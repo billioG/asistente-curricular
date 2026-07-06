@@ -1,35 +1,60 @@
 const { createClient } = require('@supabase/supabase-js');
 
 const GROQ_BASE_URL = 'https://api.groq.com/openai/v1';
-const ALLOWED_GRADOS = ['1ro', '2do', '3ro', '4to', '5to', '6to'];
-const ALLOWED_AREAS = ['Comunicacion', 'Matematica', 'Ciencias', 'Sociales'];
-const ALLOWED_ETAPAS = ['extraccion', 'actividad', 'rubrica'];
+const ALLOWED_ETAPAS = ['actividad', 'rubrica'];
 const LIMITE_MENSUAL_DEFECTO = 30;
 
 function validarEntrada(body) {
-  const { grado, area, competencia, etapa, momento } = body || {};
+  const { grado, area, competencia, indicadores, etapa, momento } = body || {};
 
-  if (!ALLOWED_GRADOS.includes(grado)) throw new Error('Grado no válido');
-  if (!ALLOWED_AREAS.includes(area)) throw new Error('Área no válida');
+  if (typeof grado !== 'string' || grado.trim().length === 0 || grado.length > 150) {
+    throw new Error('Grado no válido');
+  }
+  if (typeof area !== 'string' || area.trim().length === 0 || area.length > 150) {
+    throw new Error('Área no válida');
+  }
   if (!ALLOWED_ETAPAS.includes(etapa)) throw new Error('Etapa no válida');
   if (typeof competencia !== 'string' || competencia.length < 5 || competencia.length > 500) {
     throw new Error('Competencia inválida');
   }
-  if (/[<>]/.test(competencia)) throw new Error('Caracteres no permitidos en competencia');
+  if (/[<>]/.test(competencia) || /[<>]/.test(grado) || /[<>]/.test(area)) {
+    throw new Error('Caracteres no permitidos');
+  }
   if (etapa === 'actividad' && !['inicio', 'desarrollo', 'cierre'].includes(momento)) {
     throw new Error('Momento no válido');
   }
-  return { grado, area, competencia: competencia.trim(), etapa, momento };
+  const indicadoresLimpios = Array.isArray(indicadores)
+    ? indicadores.filter((i) => typeof i === 'string').slice(0, 20).map((i) => i.slice(0, 300))
+    : [];
+
+  return {
+    grado: grado.trim(),
+    area: area.trim(),
+    competencia: competencia.trim(),
+    indicadores: indicadoresLimpios,
+    etapa,
+    momento,
+  };
 }
 
-function construirPrompt({ etapa, grado, competencia, momento, indicadores }) {
-  if (etapa === 'extraccion') {
-    return `Extrae de la siguiente competencia del CNB de Guatemala sus componentes clave (indicadores de logro, contenidos, saberes) en formato JSON: "${competencia}"`;
+async function verificarGradoArea(supabaseAdmin, grado, area) {
+  const { data, error } = await supabaseAdmin
+    .from('competencias')
+    .select('id')
+    .eq('grado', grado)
+    .eq('area', area)
+    .limit(1);
+  if (error) throw new Error('No se pudo verificar el grado/área');
+  if (!data || data.length === 0) {
+    throw new Error('Ese grado/área no existe en el CNB');
   }
+}
+
+function construirPrompt({ etapa, grado, area, competencia, momento, indicadores }) {
   if (etapa === 'actividad') {
-    return `Como experto en pedagogía, diseña la actividad de "${momento}" para una clase de grado ${grado} cuya competencia es: "${competencia}". Responde en JSON con: titulo, descripcion, materiales, duracionMinutos.`;
+    return `Eres experto en pedagogía guatemalteca y el CNB. Diseña la actividad de "${momento}" de una clase de ${grado}, área ${area}, para la competencia: "${competencia}". Responde en JSON con las claves: titulo (string breve), objetivo (string), descripcion (string con los pasos detallados de la actividad), recursos (array de strings) y duracionMinutos (number).`;
   }
-  return `Como experto en evaluación, genera una rúbrica en JSON (criterios, niveles: excelente/logrado/en_proceso/inicial) para la competencia: "${competencia}". Indicadores: ${(indicadores || []).join(', ')}`;
+  return `Eres experto en evaluación educativa guatemalteca. Genera una rúbrica de evaluación en JSON para la competencia: "${competencia}" del área ${area}, ${grado}. Indicadores de logro: ${(indicadores || []).join('; ')}. Responde con la clave "criterios": un array de 3 a 4 objetos, cada uno con: criterio (string), excelente (string), logrado (string), en_proceso (string), inicial (string).`;
 }
 
 async function verificarLimite(supabaseAdmin, userId) {
@@ -95,6 +120,7 @@ exports.handler = async (event) => {
 
     const datos = validarEntrada(payload);
 
+    await verificarGradoArea(supabaseAdmin, datos.grado, datos.area);
     await verificarLimite(supabaseAdmin, userId);
 
     const prompt = construirPrompt(datos);

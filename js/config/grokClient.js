@@ -1,6 +1,6 @@
 import { supabase } from './supabaseClient.js';
 
-export async function generarSeccion({ grado, area, competencia, etapa, momento }) {
+export async function generarSeccion({ grado, area, competencia, indicadores, etapa, momento }) {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) throw new Error('No autenticado');
 
@@ -10,7 +10,7 @@ export async function generarSeccion({ grado, area, competencia, etapa, momento 
       'Content-Type': 'application/json',
       Authorization: `Bearer ${session.access_token}`,
     },
-    body: JSON.stringify({ grado, area, competencia, etapa, momento }),
+    body: JSON.stringify({ grado, area, competencia, indicadores, etapa, momento }),
   });
 
   const data = await res.json();

@@ -2,7 +2,6 @@
 // para evitar exponer lógica de negocio y prevenir inyección de prompt desde el cliente.
 
 export const ETAPAS = {
-  EXTRACCION: 'extraccion',
   ACTIVIDAD: 'actividad',
   RUBRICA: 'rubrica',
 };
