@@ -2,7 +2,7 @@ const { createClient } = require('@supabase/supabase-js');
 
 const GROQ_BASE_URL = 'https://api.groq.com/openai/v1';
 const ALLOWED_ETAPAS = ['actividad', 'rubrica'];
-const LIMITE_MENSUAL_DEFECTO = 30;
+const LIMITE_MENSUAL_DEFECTO = 200;
 
 function validarEntrada(body) {
   const { grado, area, competencia, indicadores, etapa, momento } = body || {};
