@@ -1,6 +1,6 @@
 const { createClient } = require('@supabase/supabase-js');
 
-const GROK_BASE_URL = 'https://api.x.ai/v1';
+const GROQ_BASE_URL = 'https://api.groq.com/openai/v1';
 const ALLOWED_GRADOS = ['1ro', '2do', '3ro', '4to', '5to', '6to'];
 const ALLOWED_AREAS = ['Comunicacion', 'Matematica', 'Ciencias', 'Sociales'];
 const ALLOWED_ETAPAS = ['extraccion', 'actividad', 'rubrica'];
@@ -99,33 +99,34 @@ exports.handler = async (event) => {
 
     const prompt = construirPrompt(datos);
 
-    const grokRes = await fetch(`${GROK_BASE_URL}/chat/completions`, {
+    const groqRes = await fetch(`${GROQ_BASE_URL}/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.XAI_API_KEY}`,
+        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'grok-4.1-fast',
+        model: 'llama-3.3-70b-versatile',
         messages: [
           { role: 'system', content: 'Eres experto en el Currículo Nacional Base (CNB) de Guatemala y en pedagogía. Responde siempre en JSON válido, sin texto adicional.' },
           { role: 'user', content: prompt },
         ],
         temperature: 0.3,
         max_tokens: 2048,
+        response_format: { type: 'json_object' },
       }),
     });
 
-    if (!grokRes.ok) {
-      const errBody = await grokRes.text();
-      console.error('Error Grok:', errBody);
+    if (!groqRes.ok) {
+      const errBody = await groqRes.text();
+      console.error('Error Groq:', errBody);
       return { statusCode: 502, headers, body: JSON.stringify({ error: 'Error generando contenido con IA' }) };
     }
 
-    const grokData = await grokRes.json();
+    const groqData = await groqRes.json();
     let resultado;
     try {
-      resultado = JSON.parse(grokData.choices[0].message.content);
+      resultado = JSON.parse(groqData.choices[0].message.content);
     } catch {
       return { statusCode: 502, headers, body: JSON.stringify({ error: 'Respuesta de IA no válida' }) };
     }
