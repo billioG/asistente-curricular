@@ -91,7 +91,7 @@ function crearTablaRubrica(rubrica) {
 
   const thead = document.createElement('thead');
   const trHead = document.createElement('tr');
-  ['Criterio', 'Excelente', 'Logrado', 'En proceso', 'Inicial'].forEach((titulo) => {
+  ['Criterio', 'Peso', 'Excelente', 'Logrado', 'En proceso', 'Inicial'].forEach((titulo) => {
     const th = document.createElement('th');
     th.textContent = titulo;
     trHead.appendChild(th);
@@ -102,7 +102,8 @@ function crearTablaRubrica(rubrica) {
   const tbody = document.createElement('tbody');
   (rubrica.criterios || []).forEach((criterio) => {
     const tr = document.createElement('tr');
-    [criterio.criterio, criterio.excelente, criterio.logrado, criterio.en_proceso, criterio.inicial].forEach((valor) => {
+    const peso = criterio.peso != null ? `${criterio.peso}%` : '';
+    [criterio.criterio, peso, criterio.excelente, criterio.logrado, criterio.en_proceso, criterio.inicial].forEach((valor) => {
       const td = document.createElement('td');
       td.textContent = valor || '';
       tr.appendChild(td);

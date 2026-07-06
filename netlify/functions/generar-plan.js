@@ -50,11 +50,33 @@ async function verificarGradoArea(supabaseAdmin, grado, area) {
   }
 }
 
+const FUNCION_PEDAGOGICA = {
+  inicio: 'Activar los conocimientos previos y generar interés genuino. Debe incluir un gancho (hook) que conecte con la realidad o el contexto del estudiante, y terminar con una pregunta o reto que dispare la curiosidad hacia el tema.',
+  desarrollo: 'Construir el nuevo conocimiento con andamiaje explícito: primero el docente modela o explica con un ejemplo concreto, luego los estudiantes practican de forma guiada, y finalmente aplican de forma más independiente. Debe incluir herramientas, técnicas o pasos concretos y verificables (cálculos, plantillas, guías, criterios de búsqueda), nunca instrucciones vagas como "investigarán" o "diseñarán" sin explicar cómo.',
+  cierre: 'Sistematizar y reflexionar sobre lo aprendido. Debe incluir un momento de metacognición explícito (qué aprendieron, qué se les dificultó, cómo lo aplicarían en la vida real) y, cuando la competencia lo permita, un producto o presentación con retroalimentación de una audiencia real (compañeros, familia, comunidad) en vez de solo "exponer en clase".',
+};
+
 function construirPrompt({ etapa, grado, area, competencia, momento, indicadores }) {
   if (etapa === 'actividad') {
-    return `Eres experto en pedagogía guatemalteca y el CNB. Diseña la actividad de "${momento}" de una clase de ${grado}, área ${area}, para la competencia: "${competencia}". Responde en JSON con las claves: titulo (string breve), objetivo (string), descripcion (string con los pasos detallados de la actividad), recursos (array de strings) y duracionMinutos (number).`;
+    return `Eres experto en pedagogía guatemalteca y el CNB. Diseña la actividad de "${momento}" de una clase de ${grado}, área ${area}, para la competencia: "${competencia}".
+
+Función pedagógica de este momento: ${FUNCION_PEDAGOGICA[momento]}
+
+Reglas obligatorias:
+- El objetivo y la descripción de este momento deben ser distintos y complementarios a los de los otros dos momentos (inicio/desarrollo/cierre); nunca repitas el mismo objetivo genérico en los tres.
+- La descripción debe detallar pasos concretos y accionables, con herramientas o técnicas específicas (por ejemplo cálculos de costo, plantillas, guías de preguntas), nunca instrucciones vagas.
+- La duración debe ser realista para un solo período de clase en Guatemala: inicio 10-15 min, desarrollo 40-60 min, cierre 10-15 min (total aproximado de la clase completa: 60-90 minutos).
+
+Responde en JSON con las claves: titulo (string breve), objetivo (string específico de este momento), descripcion (string con los pasos detallados), recursos (array de strings) y duracionMinutos (number).`;
   }
-  return `Eres experto en evaluación educativa guatemalteca. Genera una rúbrica de evaluación en JSON para la competencia: "${competencia}" del área ${area}, ${grado}. Indicadores de logro: ${(indicadores || []).join('; ')}. Responde con la clave "criterios": un array de 3 a 4 objetos, cada uno con: criterio (string), excelente (string), logrado (string), en_proceso (string), inicial (string).`;
+  return `Eres experto en evaluación educativa guatemalteca. Genera una rúbrica de evaluación en JSON para la competencia: "${competencia}" del área ${area}, ${grado}. Indicadores de logro: ${(indicadores || []).join('; ')}.
+
+Reglas obligatorias:
+- Cada criterio debe tener un peso (porcentaje) y la suma de todos los pesos debe ser 100.
+- Cada nivel (excelente, logrado, en_proceso, inicial) debe describir de forma concreta y observable qué hace el estudiante en ese nivel, evitando frases genéricas como "cumple" o "no cumple".
+- Incluye criterios que evalúen tanto el dominio conceptual/técnico de la competencia como habilidades transversales relevantes (trabajo colaborativo, comunicación, pensamiento crítico) cuando la competencia lo permita.
+
+Responde con la clave "criterios": un array de 3 a 5 objetos, cada uno con: criterio (string), peso (number, porcentaje), excelente (string), logrado (string), en_proceso (string), inicial (string).`;
 }
 
 async function verificarLimite(supabaseAdmin, userId) {

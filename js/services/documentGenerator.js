@@ -41,13 +41,13 @@ function bloqueActividad(momento, act) {
 }
 
 function tablaRubrica(rubrica) {
-  const encabezados = ['Criterio', 'Excelente', 'Logrado', 'En proceso', 'Inicial'];
+  const encabezados = ['Criterio', 'Peso', 'Excelente', 'Logrado', 'En proceso', 'Inicial'];
   const filaEncabezado = new TableRow({
     children: encabezados.map((titulo) => celda(titulo, { bold: true })),
   });
   const filas = (rubrica.criterios || []).map(
     (c) => new TableRow({
-      children: [c.criterio, c.excelente, c.logrado, c.en_proceso, c.inicial].map((valor) => celda(valor)),
+      children: [c.criterio, c.peso != null ? `${c.peso}%` : '', c.excelente, c.logrado, c.en_proceso, c.inicial].map((valor) => celda(valor)),
     })
   );
   return new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [filaEncabezado, ...filas] });
