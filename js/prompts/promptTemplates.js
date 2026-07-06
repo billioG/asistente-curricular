@@ -6,4 +6,4 @@ export const ETAPAS = {
   RUBRICA: 'rubrica',
 };
 
-export const MOMENTOS = ['inicio', 'desarrollo', 'cierre'];
+export const MOMENTOS = ['motivacion', 'desarrollo_activo', 'refuerzo_valores', 'cierre_evaluacion'];

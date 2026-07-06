@@ -20,7 +20,7 @@ function validarEntrada(body) {
   if (/[<>]/.test(competencia) || /[<>]/.test(grado) || /[<>]/.test(area)) {
     throw new Error('Caracteres no permitidos');
   }
-  if (etapa === 'actividad' && !['inicio', 'desarrollo', 'cierre'].includes(momento)) {
+  if (etapa === 'actividad' && !['motivacion', 'desarrollo_activo', 'refuerzo_valores', 'cierre_evaluacion'].includes(momento)) {
     throw new Error('Momento no válido');
   }
   const indicadoresLimpios = Array.isArray(indicadores)
@@ -51,23 +51,31 @@ async function verificarGradoArea(supabaseAdmin, grado, area) {
 }
 
 const FUNCION_PEDAGOGICA = {
-  inicio: 'Activar los conocimientos previos y generar interés genuino. Debe incluir un gancho (hook) que conecte con la realidad o el contexto del estudiante, y terminar con una pregunta o reto que dispare la curiosidad hacia el tema.',
-  desarrollo: 'Construir el nuevo conocimiento con andamiaje explícito: primero el docente modela o explica con un ejemplo concreto, luego los estudiantes practican de forma guiada, y finalmente aplican de forma más independiente. Debe incluir herramientas, técnicas o pasos concretos y verificables (cálculos, plantillas, guías, criterios de búsqueda), nunca instrucciones vagas como "investigarán" o "diseñarán" sin explicar cómo.',
-  cierre: 'Sistematizar y reflexionar sobre lo aprendido. Debe incluir un momento de metacognición explícito (qué aprendieron, qué se les dificultó, cómo lo aplicarían en la vida real) y, cuando la competencia lo permita, un producto o presentación con retroalimentación de una audiencia real (compañeros, familia, comunidad) en vez de solo "exponer en clase".',
+  motivacion: 'Plantear una pregunta detonante, un reto o un problema del mundo real que despierte interés genuino y conecte con un ecosistema de aprendizaje estimulante. Debe terminar dejando a los estudiantes con curiosidad activa hacia el tema.',
+  desarrollo_activo: 'Los estudiantes se convierten en agentes de su propio aprendizaje: participación mediante dinámicas prácticas, proyectos colaborativos o instrumentos/herramientas concretas (cálculos, plantillas, materiales manipulables, roles dentro de un proyecto). Debe incluir pasos accionables y verificables, nunca instrucciones vagas como "investigarán" o "diseñarán" sin explicar cómo.',
+  refuerzo_valores: 'Destacar de forma explícita un valor formativo concreto (disciplina, compañerismo, constancia, esfuerzo, trabajo en equipo) conectado directamente con lo que los estudiantes acaban de hacer en el desarrollo activo, con un ejemplo o frase que el docente puede usar en el momento.',
+  cierre_evaluacion: 'Resumir los puntos clave de la clase, verificar la comprensión y dejar preparados a los estudiantes para una asesoría personalizada donde puedan resolver dudas puntuales. Debe incluir un momento breve de metacognición (qué aprendieron, qué se les dificultó).',
+};
+
+const DURACION_SUGERIDA = {
+  motivacion: '5 a 10 minutos',
+  desarrollo_activo: '15 a 20 minutos',
+  refuerzo_valores: '5 minutos',
+  cierre_evaluacion: '5 minutos',
 };
 
 function construirPrompt({ etapa, grado, area, competencia, momento, indicadores }) {
   if (etapa === 'actividad') {
-    return `Eres experto en pedagogía guatemalteca y el CNB. Diseña la actividad de "${momento}" de una clase de ${grado}, área ${area}, para la competencia: "${competencia}".
+    return `Eres experto en pedagogía guatemalteca y el CNB. Diseña la fase de "${momento}" de una clase de ${grado}, área ${area}, para la competencia: "${competencia}", siguiendo la estructura pedagógica de 4 fases (Motivación, Desarrollo Activo, Refuerzo de Valores, Cierre y Evaluación).
 
-Función pedagógica de este momento: ${FUNCION_PEDAGOGICA[momento]}
+Función pedagógica de esta fase: ${FUNCION_PEDAGOGICA[momento]}
 
 Reglas obligatorias:
-- El objetivo y la descripción de este momento deben ser distintos y complementarios a los de los otros dos momentos (inicio/desarrollo/cierre); nunca repitas el mismo objetivo genérico en los tres.
-- La descripción debe detallar pasos concretos y accionables, con herramientas o técnicas específicas (por ejemplo cálculos de costo, plantillas, guías de preguntas), nunca instrucciones vagas.
-- La duración debe ser realista para un solo período de clase en Guatemala: inicio 10-15 min, desarrollo 40-60 min, cierre 10-15 min (total aproximado de la clase completa: 60-90 minutos).
+- El objetivo y la descripción de esta fase deben ser distintos y complementarios a los de las otras tres fases; nunca repitas el mismo objetivo genérico en todas.
+- La descripción debe detallar pasos concretos y accionables, con herramientas o técnicas específicas, nunca instrucciones vagas.
+- La duración debe rondar los ${DURACION_SUGERIDA[momento]}, ya que la clase completa dura entre 30 y 40 minutos en total repartidos en las 4 fases.
 
-Responde en JSON con las claves: titulo (string breve), objetivo (string específico de este momento), descripcion (string con los pasos detallados), recursos (array de strings) y duracionMinutos (number).`;
+Responde en JSON con las claves: titulo (string breve), objetivo (string específico de esta fase), descripcion (string con los pasos detallados), recursos (array de strings) y duracionMinutos (number).`;
   }
   return `Eres experto en evaluación educativa guatemalteca. Genera una rúbrica de evaluación en JSON para la competencia: "${competencia}" del área ${area}, ${grado}. Indicadores de logro: ${(indicadores || []).join('; ')}.
 

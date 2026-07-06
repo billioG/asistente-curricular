@@ -5,7 +5,13 @@ import {
   CRITERIOS_AUTOEVALUACION, PREGUNTAS_REFLEXION, CRITERIOS_COEVALUACION, ESCALA_COEVALUACION,
 } from './evaluationSheets.js';
 
-const NOMBRE_MOMENTO = { inicio: 'Inicio', desarrollo: 'Desarrollo', cierre: 'Cierre' };
+const NOMBRE_MOMENTO = {
+  motivacion: 'Motivación',
+  desarrollo_activo: 'Desarrollo Activo',
+  refuerzo_valores: 'Refuerzo de Valores',
+  cierre_evaluacion: 'Cierre y Evaluación',
+};
+const ORDEN_MOMENTOS = ['motivacion', 'desarrollo_activo', 'refuerzo_valores', 'cierre_evaluacion'];
 const LINEA_ESCRITURA = '_'.repeat(70);
 
 function celda(texto, opts = {}) {
@@ -172,7 +178,7 @@ export async function descargarDocx(plan) {
 
   if (plan.actividades) {
     children.push(new Paragraph({ text: 'Secuencia Didáctica', heading: HeadingLevel.HEADING_1 }));
-    ['inicio', 'desarrollo', 'cierre'].forEach((momento, i) => {
+    ORDEN_MOMENTOS.forEach((momento, i) => {
       if (plan.actividades[i]) children.push(...bloqueActividad(momento, plan.actividades[i]));
     });
   }

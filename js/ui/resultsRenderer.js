@@ -2,7 +2,13 @@ import {
   CRITERIOS_AUTOEVALUACION, PREGUNTAS_REFLEXION, CRITERIOS_COEVALUACION, ESCALA_COEVALUACION,
 } from '../services/evaluationSheets.js';
 
-const NOMBRE_MOMENTO = { inicio: 'Inicio', desarrollo: 'Desarrollo', cierre: 'Cierre' };
+const NOMBRE_MOMENTO = {
+  motivacion: 'Motivación',
+  desarrollo_activo: 'Desarrollo Activo',
+  refuerzo_valores: 'Refuerzo de Valores',
+  cierre_evaluacion: 'Cierre y Evaluación',
+};
+const ORDEN_MOMENTOS = ['motivacion', 'desarrollo_activo', 'refuerzo_valores', 'cierre_evaluacion'];
 
 function conScroll(tabla) {
   const wrap = document.createElement('div');
@@ -355,7 +361,7 @@ export function renderizarPlan(plan) {
 
   if (plan.actividades) {
     const actSeccion = crearSeccion('Secuencia Didáctica');
-    ['inicio', 'desarrollo', 'cierre'].forEach((momento, i) => {
+    ORDEN_MOMENTOS.forEach((momento, i) => {
       if (plan.actividades[i]) actSeccion.appendChild(crearActividad(momento, plan.actividades[i]));
     });
     contenedor.appendChild(actSeccion);
