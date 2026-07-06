@@ -1,0 +1,7 @@
+-- CNB Bachillerato en Ciencias y Letras con Orientación en Ciencias Biológicas
+-- Solo área técnica distintiva: Biología I
+-- Fuente: .../Bachillerato.../Área_de_Ciencias_Naturales/Subárea_de_Biología_I_-_Cuarto_Grado/Malla_Curricular
+
+INSERT INTO competencias (grado, area, texto_completo, indicadores) VALUES
+('Bachillerato en Ciencias y Letras con Orientación en Ciencias Biológicas - Cuarto Año', 'Biología I', '1. Aplica el conocimiento científico en la investigación y resolución de problemas del entorno.', ARRAY['1.1. Identifica el campo de acción de la Biología y la Biotecnología, sus avances, los aportes de otras ciencias, así como las aplicaciones que en este campo tiene el método científico y otros métodos heurísticos.', '1.2. Utiliza la tecnología y las Matemáticas en la resolución de problemas, en la comunicación y desarrollo de investigaciones en el estudio de la Biología.']),
+('Bachillerato en Ciencias y Letras con Orientación en Ciencias Biológicas - Cuarto Año', 'Biología I', '2. Representa información relacionada con la organización de la vida y sus principales procesos fisiológicos.', ARRAY['2.1. Representa los niveles de organización, estructuras, clasificación y la fisiología de los seres vivos.', '2.2. Distingue sustancias químicas que forman parte de los seres vivos.', '2.3. Diferencia los procesos de división celular, reproducción sexual y asexual y el rol de la mitosis y la meiosis en éstos.', '2.4. Explica las interacciones entre los organismos y el entorno físico donde viven.']);

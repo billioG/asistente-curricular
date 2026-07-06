@@ -1,0 +1,8 @@
+-- CNB Bachillerato en Ciencias y Letras con Orientación en Educación Musical
+-- Solo área técnica distintiva: Lenguaje Musical
+-- Fuente: .../Bachillerato.../Área_de_Comunicación_y_Lenguaje/Subárea_de_Lenguaje_Musical_-_Cuarto_Grado/Malla_Curricular
+
+INSERT INTO competencias (grado, area, texto_completo, indicadores) VALUES
+('Bachillerato en Ciencias y Letras con Orientación en Educación Musical - Cuarto Año', 'Lenguaje Musical', '1. Aplica habilidades auditivas al escuchar música con evidente conciencia rítmica, melódica y armónica.', ARRAY['1.1. Identifica auditivamente duraciones, motivos, secuencias y frases rítmicas.', '1.2. Compara alturas sonoras, intervalos, secuencias y frases melódicas.', '1.3. Reproduce sonidos en simultaneidad y los ubica nombrándolos por su respectivo acorde.']),
+('Bachillerato en Ciencias y Letras con Orientación en Educación Musical - Cuarto Año', 'Lenguaje Musical', '2. Utiliza signos y símbolos musicales en la lectura y escritura de partituras musicales.', ARRAY['2.1. Reproduce por lectura, secuencias rítmicas percutiendo en distintos cuerpos sonoros.', '2.2. Identifica los símbolos de la lecto-escritura musical los que luego reproduce.', '2.3. Aplica signos y símbolos musicales para escribir y expresar sus ideas y emociones.']),
+('Bachillerato en Ciencias y Letras con Orientación en Educación Musical - Cuarto Año', 'Lenguaje Musical', '3. Utiliza signos y símbolos de lecto-escritura musical en la creación y expresión de música como un recurso de comunicación.', ARRAY['3.1. Produce secuencias rítmicas y melódicas sencillas.', '3.2. Comunica ideas propias aplicando signos y símbolos musicales.', '3.3. Presenta creaciones propias a su comunidad.']);

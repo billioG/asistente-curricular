@@ -1,0 +1,7 @@
+-- CNB Perito en Industria de Alimentos
+-- Solo área técnica distintiva: Fundamentos Tecnológicos para la Industria Alimentaria - Cuarto Grado
+-- Fuente: .../Perito_en_Industria_de_Alimentos/Área_Técnica/Subárea_Fundamentos_Tecnológicos_Para_la_Industria_Alimentaria_-_Cuarto_Grado/Malla_Curricular
+
+INSERT INTO competencias (grado, area, texto_completo, indicadores) VALUES
+('Perito en Industria de Alimentos - Cuarto Año', 'Fundamentos Tecnológicos para la Industria Alimentaria', '1. Utiliza los conocimientos adquiridos para la planeación de los diversos procesos que se realizan en la elaboración de alimentos.', ARRAY['1.1. Practica procedimientos acordes con las diferentes etapas que se realizan en los procesos de manufactura de alimentos.', '1.2. Elabora diagramas de flujo eficaces para la planeación e identificación de las etapas en que se incurre para el desarrollo de productos alimenticios.', '1.3. Replica las etapas de los procesos y procedimientos de la industria alimentaria.']),
+('Perito en Industria de Alimentos - Cuarto Año', 'Fundamentos Tecnológicos para la Industria Alimentaria', '2. Aplica los principios relacionados con la inocuidad de los alimentos para obtener productos alimenticios que garanticen la salud de los consumidores.', ARRAY['2.1. Elabora planes para implementar sistemas que permitan la elaboración de alimentos inocuos.', '2.2. Explica los tipos de contaminantes que pueden existir en los alimentos.', '2.3. Expone sobre los métodos que se utilizan para evitar la contaminación en los alimentos.']);

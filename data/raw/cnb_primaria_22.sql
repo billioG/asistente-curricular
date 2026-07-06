@@ -1,0 +1,8 @@
+-- CNB Primaria - Educación Física - Tercer Grado
+-- Fuente: .../Dosificación_de_los_aprendizajes_-_Área_de_Educación_Física_-_Tercer_Grado
+
+INSERT INTO competencias (grado, area, texto_completo, indicadores) VALUES
+('Tercer Grado', 'Educación Física', '1. Demuestra habilidades y destrezas de coordinación motriz general.', ARRAY['1.1. Aplica sus habilidades y destrezas motrices en forma coordinada.', '1.2. Demuestra seguridad en actividades que requieren equilibrio.', '1.3. Demuestra su habilidad rítmica-motriz en las actividades que realiza.']),
+('Tercer Grado', 'Educación Física', '2. Establece la relación de su esquema corporal con su capacidad motriz en los diferentes movimientos que realiza.', ARRAY['2.1. Evidencia la relación de su esquema corporal, con su capacidad motriz en la realización de actividades deportivas y recreativas.']),
+('Tercer Grado', 'Educación Física', '3. Demuestra los beneficios que obtiene con la práctica de hábitos de higiene, seguridad alimentaria y nutricional y actividades físicas.', ARRAY['3.1. Practica hábitos de higiene para conservar la salud.', '3.2. Demuestra la importancia de practicar la seguridad alimentaria y nutricional para mantenerse sano.', '3.3. Utiliza medidas de seguridad en sus actividades físicas, familiares y escolares.']),
+('Tercer Grado', 'Educación Física', '4. Promueve actitudes que permiten la integración social y la pertenencia de grupo.', ARRAY['4.1. Manifiesta respeto por las actitudes, opiniones y diferencias de los y las demás como norma de conducta.', '4.2. Participa en actividades grupales mostrando seguridad, colaboración y tolerancia.']);

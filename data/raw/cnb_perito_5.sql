@@ -1,0 +1,5 @@
+-- CNB Perito Contador (todas sus variantes: Diurna, Nocturna, con Computación, Bilingüe)
+-- El MINEDUC reconoce estas carreras pero según la propia fuente "aún no han sido desarrolladas
+-- como CNB, sólo cuentan con pénsum" (lista de materias, sin competencias ni indicadores de logro).
+-- No se generan registros: no hay contenido de competencias que extraer.
+-- Fuente: https://cnbguatemala.org/wiki/Tabla_de_Pensa_de_Estudios_de_Carreras_de_Perito_Contador

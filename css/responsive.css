@@ -1,0 +1,21 @@
+/* Tablet: two columns */
+@media (min-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+  }
+}
+
+/* Desktop: sidebar-style spacing */
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: minmax(320px, 400px) 1fr;
+    gap: 3rem;
+    padding: 3rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .mago-burbuja { max-width: 300px; }
+}

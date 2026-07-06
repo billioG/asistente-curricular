@@ -1,0 +1,8 @@
+-- CNB Primaria - Educación Física - Cuarto Grado
+-- Fuente: .../Dosificación_de_los_aprendizajes_-_Área_de_Educación_Física_-_Cuarto_Grado
+
+INSERT INTO competencias (grado, area, texto_completo, indicadores) VALUES
+('Cuarto Grado', 'Educación Física', '1. Practica actividades físico deportivas que exigen cierto nivel de esfuerzo, habilidad o destreza de acuerdo con sus posibilidades y limitaciones.', ARRAY['1.1. Demuestra sus habilidades y destrezas según sus posibilidades y limitaciones.', '1.2. Demuestra seguridad en actividades que requieren equilibrio.', '1.3. Ejecuta carrera, salto de longitud y altura estilo tijereta que incluye carrera de impulso, despegue, vuelo y caída.', '1.4. Utiliza, en forma creativa y autónoma, los recursos expresivos del cuerpo y del movimiento.']),
+('Cuarto Grado', 'Educación Física', '2. Practica actividades de iniciación deportiva, recreativa y juegos fortaleciendo el desarrollo de valores interculturales.', ARRAY['2.2. Participa en juegos y rondas tradicionales y escolares que requieren el conocimiento del esquema corporal.']),
+('Cuarto Grado', 'Educación Física', '3. Identifica los beneficios que obtiene con la práctica de hábitos de higiene, seguridad alimentaria y nutricional.', ARRAY['3.1. Practica hábitos de higiene.', '3.2. Practica la seguridad alimentaria y nutricional.', '3.3. Utiliza medidas de seguridad en sus actividades físicas, familiares y escolares.']),
+('Cuarto Grado', 'Educación Física', '4. Demuestra actitudes que permiten la integración social y la pertenencia de grupo.', ARRAY['4.1. Manifiesta respeto por las actitudes, opiniones y diferencias de los y las demás.', '4.2. Participa en actividades grupales mostrando seguridad y tolerancia.']);

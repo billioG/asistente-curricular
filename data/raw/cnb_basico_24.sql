@@ -1,0 +1,7 @@
+-- CNB Ciclo Básico - Emprendimiento para la Productividad - Tercer Grado
+-- Fuente: .../CNB_Ciclo_Básico/Emprendimiento_para_la_Productividad/Malla_curricular_Tercer_grado
+
+INSERT INTO competencias (grado, area, texto_completo, indicadores) VALUES
+('Tercero Básico', 'Emprendimiento para la Productividad', '1. Ejecuta proyectos emprendedores para contribuir al desarrollo local comunitario.', ARRAY['1.1. Utiliza herramientas para diseñar proyectos emprendedores.', '1.2. Aplica procesos de mercadotecnia y publicidad en proyectos de emprendimiento local.', '1.3. Organiza las funciones en la administración de proyectos de emprendimiento local.']),
+('Tercero Básico', 'Emprendimiento para la Productividad', '2. Determina el uso de la tecnología adecuada en la ejecución de proyectos emprendedores.', ARRAY['2.1. Practica los procesos de la gestión de la calidad y mejora continua de los procesos productivos.', '2.2. Demuestra la incidencia ambiental de un proyecto con la innovación sostenible ecológica.', '2.3. Identifica las diferentes tecnologías de la información y comunicación para contribuir a la mejora continua del proyecto emprendedor.']),
+('Tercero Básico', 'Emprendimiento para la Productividad', '3. Administra con sostenibilidad proyectos de emprendimiento personales y locales.', ARRAY['3.1. Identifica las etapas del proceso administrativo.', '3.2. Registra los procesos y requisitos legales en la organización laboral.', '3.3. Estima fuentes para la sostenibilidad de proyectos emprendedores locales.']);

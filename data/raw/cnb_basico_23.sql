@@ -1,0 +1,7 @@
+-- CNB Ciclo Básico - Emprendimiento para la Productividad - Segundo Grado
+-- Fuente: .../CNB_Ciclo_Básico/Emprendimiento_para_la_Productividad/Malla_curricular_Segundo_grado
+
+INSERT INTO competencias (grado, area, texto_completo, indicadores) VALUES
+('Segundo Básico', 'Emprendimiento para la Productividad', '1. Diseña propuestas de proyectos emprendedores para solucionar problemas o necesidades familiares y locales.', ARRAY['1.1. Describe las características de los proyectos emprendedores sostenibles.', '1.2. Identifica las etapas y procesos para planificar y promocionar proyectos.', '1.3. Registra las diferentes industrias y servicios que se prestan en la comunidad.']),
+('Segundo Básico', 'Emprendimiento para la Productividad', '2. Desarrolla procesos productivos con calidad, utilizando tecnologías innovadoras y alternativas en la comunidad.', ARRAY['2.1. Diferencia las técnicas artesanales de las industriales.', '2.2. Identifica la importancia de la utilización de los indicadores de calidad en los procesos productivos.', '2.3. Cuantifica el impacto ambiental de los proyectos productivos.']),
+('Segundo Básico', 'Emprendimiento para la Productividad', '3. Planifica procesos administrativos para el desarrollo de proyectos productivos sostenibles y sustentables.', ARRAY['3.1. Identifica métodos para la sostenibilidad de proyectos productivos/emprendedores y sustentabilidad.', '3.2. Identifica los procesos y requisitos legales en la organización laboral.', '3.3. Estima el plan de costos para elaborar diferentes productos.']);

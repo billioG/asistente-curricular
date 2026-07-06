@@ -1,0 +1,8 @@
+-- CNB Bachillerato por Madurez
+-- Esta modalidad (para jóvenes y adultos) NO tiene área técnica distintiva: comparte las mismas
+-- áreas generales que Bachillerato en Ciencias y Letras (Comunicación y Lenguaje L1/L2/L3, TICs,
+-- Matemáticas, Ciencias Naturales, Ciencias Sociales y Formación Ciudadana, Expresión Artística,
+-- Educación Física, Filosofía, Psicología, Seminario/Investigación), condensadas para estudio
+-- semipresencial/a distancia en 2 etapas (4 semestres). No se generan registros adicionales aquí;
+-- ver cnb_bachillerato_1.sql para las competencias base ya cubiertas (aplicables a esta modalidad).
+-- Fuente: https://cnbguatemala.org/wiki/Bachillerato_por_Madurez

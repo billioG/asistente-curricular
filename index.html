@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Generador de Planes CNB</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://esm.sh; connect-src 'self' https://*.supabase.co https://esm.sh; img-src 'self' data:; style-src 'self'; frame-ancestors 'none'">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+<header class="topbar">
+  <h1>Generador de Planes CNB</h1>
+  <button id="btnLogout" class="btn btn-icon" aria-label="Cerrar sesión">Salir</button>
+</header>
+
+<main class="layout">
+  <section class="panel-form">
+    <form id="formGenerar" novalidate>
+      <div class="form-group">
+        <label for="grado">Grado</label>
+        <select id="grado" name="grado" required>
+          <option value="">Seleccionar...</option>
+          <option value="1ro">1ro Primaria</option>
+          <option value="2do">2do Primaria</option>
+          <option value="3ro">3ro Primaria</option>
+          <option value="4to">4to Primaria</option>
+          <option value="5to">5to Primaria</option>
+          <option value="6to">6to Primaria</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="area">Área</label>
+        <select id="area" name="area" required>
+          <option value="">Seleccionar...</option>
+          <option value="Comunicacion">Comunicación y Lenguaje</option>
+          <option value="Matematica">Matemática</option>
+          <option value="Ciencias">Ciencias Naturales</option>
+          <option value="Sociales">Ciencias Sociales</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="competencia">Competencia de Grado</label>
+        <textarea id="competencia" name="competencia" rows="3" required maxlength="500" placeholder="Ej: Redacta textos narrativos breves..."></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Generar Plan de Clase</button>
+    </form>
+
+    <div id="loading" class="loading hidden" role="status" aria-live="polite">
+      <div class="spinner" aria-hidden="true"></div>
+      <p>Generando plan con IA...</p>
+    </div>
+
+    <div id="errorBox" class="error-box hidden" role="alert"></div>
+  </section>
+
+  <section class="panel-resultados">
+    <div id="resultados" class="hidden">
+      <div id="planContent"></div>
+      <button id="btnDescargar" class="btn btn-secondary">Descargar Plan (.docx)</button>
+    </div>
+    <div id="resultadosVacio" class="empty-state">
+      <p>Completa el formulario para generar tu plan de clase.</p>
+    </div>
+  </section>
+</main>
+
+<div id="magoWrap" class="mago-wrap">
+  <button id="magoToggle" class="mago-btn" aria-label="Mostrar consejos del mago guardián" aria-expanded="false">
+    <img src="assets/mago/mago_normal.svg" alt="" id="magoAvatar" width="44" height="44">
+  </button>
+  <div id="magoBurbuja" class="mago-burbuja hidden" role="status" aria-live="polite">
+    <p id="magoTexto">Hola, soy tu guía del CNB. ¿Qué clase preparamos hoy?</p>
+    <button id="magoCerrar" class="mago-cerrar" aria-label="Cerrar mensaje">×</button>
+  </div>
+</div>
+
+<script src="js/config/env.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

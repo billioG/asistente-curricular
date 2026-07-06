@@ -1,0 +1,15 @@
+-- CNB Primaria - Educación Física - Primero y Segundo Grado
+-- Fuentes: .../Dosificación_de_los_aprendizajes_-_Área_de_Educación_Física_-_{Grado}
+
+INSERT INTO competencias (grado, area, texto_completo, indicadores) VALUES
+-- Primer Grado
+('Primer Grado', 'Educación Física', '1. Identifica su esquema corporal y la forma de utilizarlo para realizar diversas actividades.', ARRAY['1.1. Utiliza su esquema corporal en las diversas actividades que realiza.', '1.2. Demuestra control de las diferentes partes de su cuerpo al realizar actividades que requieren equilibrio.', '1.3. Identifica la ubicación de su cuerpo, con respecto a un espacio y tiempo determinado.', '1.4. Identifica su habilidad rítmica-motriz en las actividades que realiza.']),
+('Primer Grado', 'Educación Física', '2. Demuestra sus habilidades perceptivas, visuales, auditivas y táctiles por medio de actividades motrices.', ARRAY['2.1. Participa en juegos y rondas tradicionales y escolares que requieren el conocimiento del esquema corporal.']),
+('Primer Grado', 'Educación Física', '3. Identifica los beneficios que obtiene con la práctica de hábitos de higiene, seguridad alimentaria y nutricional y actividades físicas.', ARRAY['3.1. Practica hábitos de higiene.', '3.2. Practica la seguridad alimentaria y nutricional.', '3.3. Identifica medidas de seguridad en sus actividades físicas, familiares y escolares.']),
+('Primer Grado', 'Educación Física', '4. Fomenta actitudes que permiten la integración social y la pertenencia de grupo.', ARRAY['4.1. Manifiesta respeto por las actitudes, opiniones y diferencias de los y las demás.', '4.2. Participa en actividades grupales mostrando seguridad y tolerancia.']),
+
+-- Segundo Grado
+('Segundo Grado', 'Educación Física', '1. Utiliza el conocimiento de la función de su esquema corporal en las diversas actividades que realiza.', ARRAY['1.1. Practica movimientos corporales empleando diferentes partes de su cuerpo.', '1.2. Demuestra dominio de sus movimientos en forma combinada.', '1.3. Demuestra seguridad en actividades que requieren equilibrio.', '1.4. Mejora su habilidad rítmica-motriz en las actividades que realiza.']),
+('Segundo Grado', 'Educación Física', '2. Demuestra dominio de sus movimientos en forma coordinada.', ARRAY['2.1. Participa, con seguridad, en juegos y rondas tradicionales.']),
+('Segundo Grado', 'Educación Física', '3. Practica hábitos de higiene, seguridad alimentaria y nutricional y actividades físicas en beneficio de su salud.', ARRAY['3.1. Práctica hábitos de higiene para conservar la salud.', '3.2. Práctica la seguridad alimentaria y nutricional para mantenerse sano.', '3.3. Utiliza medidas de seguridad en sus actividades físicas, familiares y escolares.']),
+('Segundo Grado', 'Educación Física', '4. Practica actitudes que permiten la integración social y la pertenencia de grupo.', ARRAY['4.1. Demuestra respeto por las actitudes, opiniones y diferencias de los y las demás.', '4.2. Participa en actividades grupales mostrando seguridad y colaboración.']);

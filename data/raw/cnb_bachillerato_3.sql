@@ -1,0 +1,18 @@
+-- CNB Bachillerato en Ciencias y Letras con Orientación en Computación - Quinto Año
+-- Solo áreas técnicas distintivas
+-- Fuente: .../Bachillerato_en_Ciencias_y_Letras_con_Orientación_en_Computación/Competencias_-_Quinto_Grado
+
+INSERT INTO competencias (grado, area, texto_completo, indicadores) VALUES
+('Bachillerato en Ciencias y Letras con Orientación en Computación - Quinto Año', 'Producción de Contenidos Digitales', 'Competencia 1: Relaciona la importancia que tiene el equipo de cómputo y las TICs en la elaboración de plataforma de contenido digital para su aplicación.', ARRAY[]::TEXT[]),
+('Bachillerato en Ciencias y Letras con Orientación en Computación - Quinto Año', 'Producción de Contenidos Digitales', 'Competencia 2: Redacta artículos los cuales complementa con metadatos y los publica en la Web.', ARRAY[]::TEXT[]),
+('Bachillerato en Ciencias y Letras con Orientación en Computación - Quinto Año', 'Producción de Contenidos Digitales', 'Competencia 3: Explora espacios de simulación virtual para la presentación de contenidos digitales, integrando efectos especiales a las producciones.', ARRAY[]::TEXT[]),
+('Bachillerato en Ciencias y Letras con Orientación en Computación - Quinto Año', 'Producción de Contenidos Digitales', 'Competencia 4: Investiga en sitios virtuales y genera producciones digitales de tipo educativo y social.', ARRAY[]::TEXT[]),
+('Bachillerato en Ciencias y Letras con Orientación en Computación - Quinto Año', 'Laboratorio II', 'Competencia 1: Aplica los conocimientos adquiridos en la resolución de problemas relacionados con la programación.', ARRAY[]::TEXT[]),
+('Bachillerato en Ciencias y Letras con Orientación en Computación - Quinto Año', 'Laboratorio II', 'Competencia 2: Aplica conocimientos de programación en la mejora de un software que contribuya al avance del trabajo asignado.', ARRAY[]::TEXT[]),
+('Bachillerato en Ciencias y Letras con Orientación en Computación - Quinto Año', 'Laboratorio II', 'Competencia 3: Utiliza su conocimiento del sistema operativo al realizar ejercicios prácticos en el laboratorio.', ARRAY[]::TEXT[]),
+('Bachillerato en Ciencias y Letras con Orientación en Computación - Quinto Año', 'Laboratorio II', 'Competencia 4: Utiliza diferentes herramientas de productividad, para generar diversos tipos de documentos.', ARRAY[]::TEXT[]),
+('Bachillerato en Ciencias y Letras con Orientación en Computación - Quinto Año', 'Laboratorio II', 'Competencia 5: Diferencia las funciones de los dispositivos de almacenamiento que pueden ser afectados por distintos tipos de virus que se introducen en el equipo de cómputo.', ARRAY[]::TEXT[]),
+('Bachillerato en Ciencias y Letras con Orientación en Computación - Quinto Año', 'Reparación y Soporte Técnico', 'Competencia 1: Utiliza la herramienta básica en la aplicación del mantenimiento al equipo de cómputo para acceder a la Red.', ARRAY[]::TEXT[]),
+('Bachillerato en Ciencias y Letras con Orientación en Computación - Quinto Año', 'Reparación y Soporte Técnico', 'Competencia 2: Verifica los elementos del sistema, previo a la conexión e instalación de programas e impresoras.', ARRAY[]::TEXT[]),
+('Bachillerato en Ciencias y Letras con Orientación en Computación - Quinto Año', 'Reparación y Soporte Técnico', 'Competencia 3: Instala nuevos componentes de Windows que contribuyen a mejorar las funciones de la computadora.', ARRAY[]::TEXT[]),
+('Bachillerato en Ciencias y Letras con Orientación en Computación - Quinto Año', 'Reparación y Soporte Técnico', 'Competencia 4: Identifica los componentes y las funciones de las diferentes tarjetas que utiliza la computadora para su funcionamiento.', ARRAY[]::TEXT[]);

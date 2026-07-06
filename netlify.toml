@@ -1,0 +1,12 @@
+[build]
+  functions = "netlify/functions"
+  publish = "."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "no-referrer"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://esm.sh; connect-src 'self' https://*.supabase.co https://esm.sh; img-src 'self' data:; style-src 'self'; frame-ancestors 'none'"

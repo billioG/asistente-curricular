@@ -1,0 +1,7 @@
+-- CNB Bachillerato en Ciencias y Letras con Orientación en Turismo
+-- Solo área técnica distintiva: Administración Turística
+-- Fuente: .../Bachillerato.../Área_de_Administración/Subárea_de_Administración_Turística_-_Cuarto_Grado/Malla_Curricular
+
+INSERT INTO competencias (grado, area, texto_completo, indicadores) VALUES
+('Bachillerato en Ciencias y Letras con Orientación en Turismo - Cuarto Año', 'Administración Turística', '1. Utiliza la información de la administración del recurso humano en sus diferentes intervenciones, considerándola como un factor determinante para el buen funcionamiento de la empresa.', ARRAY['1.1. Emite juicios basados en los resultados de sus investigaciones sobre la administración del recurso humano.', '1.2. Aplica el conocimiento sobre la selección y contratación de personal en sus diferentes intervenciones.', '1.3. Valora la importancia de la capacitación y evaluación constante al personal ya que esto incide en el servicio de altura que se le brinda al cliente.']),
+('Bachillerato en Ciencias y Letras con Orientación en Turismo - Cuarto Año', 'Administración Turística', '2. Reconoce el proceso administrativo estructurado y la aplicación de herramientas y técnicas efectivas en el servicio al cliente, que trae beneficios al turismo nacional e internacional, buscando superar las expectativas del turista.', ARRAY['2.1. Utiliza técnicas y herramientas de servicio al cliente.', '2.2. Utiliza programas de Excel como herramientas que le permiten organizar y llevar mejor control de las cuentas.']);
