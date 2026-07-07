@@ -1,5 +1,8 @@
 -- Requerido para el tipo `vector` (búsqueda semántica)
-create extension if not exists vector;
+-- Se instala en un esquema dedicado (no en `public`) siguiendo las buenas
+-- prácticas de seguridad de Supabase.
+create schema if not exists extensions;
+create extension if not exists vector with schema extensions;
 
 -- Competencias del CNB
 create table if not exists competencias (
@@ -9,7 +12,7 @@ create table if not exists competencias (
   texto_completo text not null,
   codigo_cnb text,
   indicadores text[],
-  embedding vector(1536)
+  embedding extensions.vector(1536)
 );
 
 alter table competencias enable row level security;
