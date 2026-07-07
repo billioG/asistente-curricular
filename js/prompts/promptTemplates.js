@@ -2,14 +2,24 @@
 // para evitar exponer lógica de negocio y prevenir inyección de prompt desde el cliente.
 
 export const ETAPAS = {
-  SESION: 'sesion',
+  PASO: 'paso',
   RUBRICA: 'rubrica',
 };
 
-export const SESIONES = [1, 2, 3];
+export const PASOS_DISENO = ['explorar', 'sintetizar', 'imaginar', 'crear', 'compartir'];
 
-export const ENFOQUE_SESION = {
-  1: 'Inicio + Concreto',
-  2: 'Pictórico + Práctica Guiada',
-  3: 'Abstracto + Cierre',
+export const NOMBRE_PASO = {
+  explorar: 'Explorar',
+  sintetizar: 'Sintetizar',
+  imaginar: 'Imaginar',
+  crear: 'Crear',
+  compartir: 'Compartir',
+};
+
+export const ICONO_PASO = {
+  explorar: '🔍',
+  sintetizar: '⚙️',
+  imaginar: '💡',
+  crear: '🛠️',
+  compartir: '📣',
 };

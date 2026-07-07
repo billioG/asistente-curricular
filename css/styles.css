@@ -178,42 +178,21 @@ select:focus, textarea:focus, input:focus {
   color: var(--color-muted);
 }
 
-.plan-sesion {
+.plan-paso {
   background: var(--color-bg);
   border-radius: 0.75rem;
   padding: 1rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 
-.plan-sesion h3 {
+.plan-paso h3 {
   font-size: 0.95rem;
   color: var(--color-primary);
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.5rem;
 }
 
-.plan-pasos {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.8rem;
-  background: var(--color-surface);
-}
-
-.plan-pasos th, .plan-pasos td {
-  border: 1px solid var(--color-border);
-  padding: 0.5rem;
-  text-align: left;
-  vertical-align: top;
-}
-
-.plan-pasos th {
-  background: var(--color-bg);
-  color: var(--color-muted);
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.plan-pasos td:first-child { white-space: nowrap; font-weight: 600; color: var(--color-primary-dark); }
+.plan-paso p { margin: 0.35rem 0; font-size: 0.9rem; }
+.plan-paso ul { margin: 0.35rem 0; padding-left: 1.25rem; font-size: 0.9rem; }
 
 .plan-rubrica {
   width: 100%;

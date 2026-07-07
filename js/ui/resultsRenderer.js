@@ -1,6 +1,7 @@
 import {
   CRITERIOS_AUTOEVALUACION, PREGUNTAS_REFLEXION, CRITERIOS_COEVALUACION, ESCALA_COEVALUACION,
 } from '../services/evaluationSheets.js';
+import { PASOS_DISENO, NOMBRE_PASO, ICONO_PASO } from '../prompts/promptTemplates.js';
 
 function conScroll(tabla) {
   const wrap = document.createElement('div');
@@ -47,43 +48,49 @@ function crearLista(items) {
   return ul;
 }
 
-function crearTablaPasos(pasos) {
-  const tabla = document.createElement('table');
-  tabla.className = 'plan-pasos';
-
-  const thead = document.createElement('thead');
-  const trHead = document.createElement('tr');
-  ['Tiempo', 'Acción del Maestro', 'Acción del Estudiante', 'Propósito'].forEach((titulo) => {
-    const th = document.createElement('th');
-    th.textContent = titulo;
-    trHead.appendChild(th);
-  });
-  thead.appendChild(trHead);
-  tabla.appendChild(thead);
-
-  const tbody = document.createElement('tbody');
-  (pasos || []).forEach((paso) => {
-    const tr = document.createElement('tr');
-    [paso.tiempo, paso.accionMaestro, paso.accionEstudiante, paso.proposito].forEach((valor) => {
-      const td = document.createElement('td');
-      td.textContent = valor || '';
-      tr.appendChild(td);
-    });
-    tbody.appendChild(tr);
-  });
-  tabla.appendChild(tbody);
-  return tabla;
-}
-
-function crearSesion(numero, sesionData) {
+function crearActividadDiseno(paso, act) {
   const wrap = document.createElement('div');
-  wrap.className = 'plan-sesion';
+  wrap.className = 'plan-paso';
 
   const h3 = document.createElement('h3');
-  h3.textContent = `Sesión ${numero} — ${sesionData.enfoque || ''}${sesionData.titulo ? `: ${sesionData.titulo}` : ''}`;
+  h3.textContent = `${ICONO_PASO[paso] || ''} ${NOMBRE_PASO[paso] || paso}${act.titulo ? ` — ${act.titulo}` : ''}`;
   wrap.appendChild(h3);
 
-  wrap.appendChild(conScroll(crearTablaPasos(sesionData.pasos)));
+  if (act.objetivo) {
+    const p = document.createElement('p');
+    const strong = document.createElement('strong');
+    strong.textContent = 'Objetivo: ';
+    p.appendChild(strong);
+    p.append(act.objetivo);
+    wrap.appendChild(p);
+  }
+
+  if (act.tarea) {
+    const p = document.createElement('p');
+    const strong = document.createElement('strong');
+    strong.textContent = 'Tarea: ';
+    p.appendChild(strong);
+    p.append(act.tarea);
+    wrap.appendChild(p);
+  }
+
+  if (Array.isArray(act.recursos) && act.recursos.length) {
+    const p = document.createElement('p');
+    const strong = document.createElement('strong');
+    strong.textContent = 'Recursos:';
+    p.appendChild(strong);
+    wrap.appendChild(p);
+    wrap.appendChild(crearLista(act.recursos));
+  }
+
+  if (act.duracionMinutos) {
+    const p = document.createElement('p');
+    const strong = document.createElement('strong');
+    strong.textContent = 'Duración: ';
+    p.appendChild(strong);
+    p.append(`${act.duracionMinutos} min`);
+    wrap.appendChild(p);
+  }
 
   return wrap;
 }
@@ -345,12 +352,12 @@ export function renderizarPlan(plan) {
     contenedor.appendChild(indSeccion);
   }
 
-  if (plan.sesiones && plan.sesiones.length) {
-    const sesionesSeccion = crearSeccion('Secuencia Semanal (3 Sesiones de 40 min)');
-    plan.sesiones.forEach((sesionData, i) => {
-      if (sesionData) sesionesSeccion.appendChild(crearSesion(i + 1, sesionData));
+  if (plan.actividades && plan.actividades.length) {
+    const actividadesSeccion = crearSeccion('Proceso de Diseño');
+    PASOS_DISENO.forEach((paso, i) => {
+      if (plan.actividades[i]) actividadesSeccion.appendChild(crearActividadDiseno(paso, plan.actividades[i]));
     });
-    contenedor.appendChild(sesionesSeccion);
+    contenedor.appendChild(actividadesSeccion);
   }
 
   if (plan.rubrica) {
