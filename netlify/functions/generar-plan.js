@@ -14,7 +14,7 @@ function validarEntrada(body) {
     throw new Error('Área no válida');
   }
   if (!ALLOWED_ETAPAS.includes(etapa)) throw new Error('Etapa no válida');
-  if (typeof competencia !== 'string' || competencia.length < 5 || competencia.length > 500) {
+  if (typeof competencia !== 'string' || competencia.length < 5 || competencia.length > 1000) {
     throw new Error('Competencia inválida');
   }
   if (/[<>]/.test(competencia) || /[<>]/.test(grado) || /[<>]/.test(area)) {
