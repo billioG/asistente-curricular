@@ -31,9 +31,17 @@
         </select>
       </div>
 
-      <div class="form-group">
+      <div class="form-group campo-con-sugerencias">
         <label for="competencia">Competencia de Grado</label>
-        <textarea id="competencia" name="competencia" rows="3" required maxlength="500" placeholder="Ej: Redacta textos narrativos breves..."></textarea>
+        <textarea id="competencia" name="competencia" rows="3" required maxlength="500" placeholder="Ej: Redacta textos narrativos breves..." autocomplete="off"></textarea>
+        <ul id="competenciaSugerencias" class="sugerencias-lista hidden"></ul>
+      </div>
+
+      <div class="form-group form-group-check">
+        <label class="check-label">
+          <input type="checkbox" id="adecuacionNEE">
+          Adecuación curricular (Educación Especial / NEE)
+        </label>
       </div>
 
       <button type="submit" class="btn btn-primary">Generar Plan de Clase</button>

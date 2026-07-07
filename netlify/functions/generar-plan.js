@@ -6,7 +6,7 @@ const PASOS_VALIDOS = ['explorar', 'sintetizar', 'imaginar', 'crear', 'compartir
 const LIMITE_MENSUAL_DEFECTO = 200;
 
 function validarEntrada(body) {
-  const { grado, area, competencia, indicadores, etapa, paso } = body || {};
+  const { grado, area, competencia, indicadores, etapa, paso, adecuacionNEE } = body || {};
 
   if (typeof grado !== 'string' || grado.trim().length === 0 || grado.length > 150) {
     throw new Error('Grado no válido');
@@ -35,6 +35,7 @@ function validarEntrada(body) {
     indicadores: indicadoresLimpios,
     etapa,
     paso,
+    adecuacionNEE: adecuacionNEE === true,
   };
 }
 
@@ -67,7 +68,9 @@ const FUNCION_PASO = {
   compartir: 'Comunicar la solución diseñada a una audiencia real (compañeros, familia, comunidad) de forma clara y convincente, explicando el problema, la solución y por qué funciona.',
 };
 
-function construirPromptPaso({ grado, area, competencia, paso, indicadores }) {
+const INSTRUCCION_NEE = 'Este estudiante requiere una adecuación curricular de acceso para Necesidades Educativas Especiales (NEE), siguiendo los lineamientos del CNB de Guatemala: usa lenguaje simple y directo, apoyos visuales o sensoriales concretos, tiempo flexible, y ofrece una forma alternativa de participar o demostrar el aprendizaje (oral, gráfica o manipulativa) además de la tarea estándar. La competencia y el nivel de exigencia se mantienen, solo se adapta el acceso.';
+
+function construirPromptPaso({ grado, area, competencia, paso, indicadores, adecuacionNEE }) {
   const nombre = NOMBRE_PASO[paso];
 
   return `Eres experto en pedagogía guatemalteca, el CNB y el proceso de diseño (design thinking) usado por agencias de innovación educativa. Diseña la actividad del paso "${nombre}" del proceso de diseño (Explorar, Sintetizar, Imaginar, Crear, Compartir) para ${grado}, área ${area}, sobre la competencia: "${competencia}". Indicadores de logro: ${(indicadores || []).join('; ')}.
@@ -79,26 +82,28 @@ Reglas obligatorias:
 - La tarea debe usar el cuaderno de diseño del estudiante (donde anota, dibuja o escribe) y dar pasos concretos y accionables, nunca instrucciones vagas.
 - El objetivo y la tarea deben ser distintos y avanzar respecto a los otros 4 pasos; nunca repitas el mismo contenido genérico en todos.
 - La duración debe ser realista para un período de clase (10 a 20 minutos por paso).
+${adecuacionNEE ? `- ${INSTRUCCION_NEE}` : ''}
 
 Responde en JSON con las claves: titulo (string breve), objetivo (string específico de este paso), tarea (string con las instrucciones detalladas para el estudiante), recursos (array de strings) y duracionMinutos (number).`;
 }
 
-function construirPromptRubrica({ grado, area, competencia, indicadores }) {
+function construirPromptRubrica({ grado, area, competencia, indicadores, adecuacionNEE }) {
   return `Eres experto en evaluación educativa guatemalteca. Genera una rúbrica de evaluación en JSON para la competencia: "${competencia}" del área ${area}, ${grado}, trabajada a lo largo de un proceso de diseño de 5 pasos (Explorar, Sintetizar, Imaginar, Crear, Compartir). Indicadores de logro: ${(indicadores || []).join('; ')}.
 
 Reglas obligatorias:
 - Cada criterio debe tener un peso (porcentaje) y la suma de todos los pesos debe ser 100.
 - Cada nivel (excelente, logrado, en_proceso, inicial) debe describir de forma concreta y observable qué hace el estudiante en ese nivel, evitando frases genéricas como "cumple" o "no cumple".
 - Incluye criterios que evalúen tanto el dominio conceptual/técnico de la competencia como habilidades transversales relevantes (trabajo colaborativo, comunicación, pensamiento crítico, creatividad) cuando la competencia lo permita.
+${adecuacionNEE ? `- ${INSTRUCCION_NEE} Los descriptores de los niveles deben reflejar formas alternativas válidas de demostrar el logro.` : ''}
 
 Responde con la clave "criterios": un array de 3 a 5 objetos, cada uno con: criterio (string), peso (number, porcentaje), excelente (string), logrado (string), en_proceso (string), inicial (string).`;
 }
 
-function construirPrompt({ etapa, grado, area, competencia, paso, indicadores }) {
+function construirPrompt({ etapa, grado, area, competencia, paso, indicadores, adecuacionNEE }) {
   if (etapa === 'paso') {
-    return construirPromptPaso({ grado, area, competencia, paso, indicadores });
+    return construirPromptPaso({ grado, area, competencia, paso, indicadores, adecuacionNEE });
   }
-  return construirPromptRubrica({ grado, area, competencia, indicadores });
+  return construirPromptRubrica({ grado, area, competencia, indicadores, adecuacionNEE });
 }
 
 async function verificarLimite(supabaseAdmin, userId) {
@@ -122,6 +127,45 @@ async function verificarLimite(supabaseAdmin, userId) {
 
 async function registrarUso(supabaseAdmin, userId) {
   await supabaseAdmin.from('uso_api').insert([{ user_id: userId, tipo: 'generacion_plan' }]);
+}
+
+function esperar(ms) {
+  return new Promise((resolve) => { setTimeout(resolve, ms); });
+}
+
+async function llamarGroqConReintento(prompt, intentos = 3) {
+  for (let intento = 1; intento <= intentos; intento += 1) {
+    const groqRes = await fetch(`${GROQ_BASE_URL}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [
+          { role: 'system', content: 'Eres experto en el Currículo Nacional Base (CNB) de Guatemala y en pedagogía. Responde siempre en JSON válido, sin texto adicional.' },
+          { role: 'user', content: prompt },
+        ],
+        temperature: 0.3,
+        max_tokens: 1024,
+        response_format: { type: 'json_object' },
+      }),
+    });
+
+    if (groqRes.ok) return groqRes.json();
+
+    const errBody = await groqRes.text();
+    console.error('Error Groq:', errBody);
+
+    const esRateLimit = groqRes.status === 429 || /rate_limit/i.test(errBody);
+    if (esRateLimit && intento < intentos) {
+      await esperar(intento * 2000);
+      continue;
+    }
+    return null;
+  }
+  return null;
 }
 
 exports.handler = async (event) => {
@@ -169,31 +213,10 @@ exports.handler = async (event) => {
 
     const prompt = construirPrompt(datos);
 
-    const groqRes = await fetch(`${GROQ_BASE_URL}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        messages: [
-          { role: 'system', content: 'Eres experto en el Currículo Nacional Base (CNB) de Guatemala y en pedagogía. Responde siempre en JSON válido, sin texto adicional.' },
-          { role: 'user', content: prompt },
-        ],
-        temperature: 0.3,
-        max_tokens: 2048,
-        response_format: { type: 'json_object' },
-      }),
-    });
-
-    if (!groqRes.ok) {
-      const errBody = await groqRes.text();
-      console.error('Error Groq:', errBody);
-      return { statusCode: 502, headers, body: JSON.stringify({ error: 'Error generando contenido con IA' }) };
+    const groqData = await llamarGroqConReintento(prompt);
+    if (!groqData) {
+      return { statusCode: 502, headers, body: JSON.stringify({ error: 'El servicio de IA está saturado en este momento. Intenta de nuevo en unos segundos.' }) };
     }
-
-    const groqData = await groqRes.json();
     let resultado;
     try {
       resultado = JSON.parse(groqData.choices[0].message.content);

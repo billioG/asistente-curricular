@@ -60,6 +60,20 @@ export async function obtenerAreasPorGrado(grado) {
   return [...new Set(data.map((r) => r.area))];
 }
 
+export async function sugerirCompetencias(grado, area, textoParcial) {
+  if (!grado || !area || !textoParcial || textoParcial.trim().length < 3) return [];
+  const { data, error } = await supabase
+    .from('competencias')
+    .select('texto_completo')
+    .eq('grado', grado)
+    .eq('area', area)
+    .ilike('texto_completo', `%${textoParcial.trim().slice(0, 100)}%`)
+    .limit(8);
+
+  if (error) return [];
+  return [...new Set(data.map((r) => r.texto_completo))];
+}
+
 export async function buscarCompetencia(grado, area, textoLibre) {
   const { data, error } = await supabase
     .from('competencias')

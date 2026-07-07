@@ -162,9 +162,17 @@ export async function descargarDocx(plan) {
     new Paragraph({ text: 'Plan de Clase - CNB Guatemala', heading: HeadingLevel.TITLE }),
     tablaEncabezado(plan),
     new Paragraph({ text: '' }),
-    new Paragraph({ text: 'Competencia de Grado', heading: HeadingLevel.HEADING_1 }),
-    new Paragraph({ text: plan.competencia }),
   ];
+
+  if (plan.adecuacionNEE) {
+    children.push(new Paragraph({ text: 'Incluye adecuación curricular (Educación Especial / NEE)', bold: true }));
+    children.push(new Paragraph({ text: '' }));
+  }
+
+  children.push(
+    new Paragraph({ text: 'Competencia de Grado', heading: HeadingLevel.HEADING_1 }),
+    new Paragraph({ text: plan.competencia })
+  );
 
   if (plan.indicadores && plan.indicadores.length) {
     children.push(new Paragraph({ text: 'Indicadores de Logro', heading: HeadingLevel.HEADING_1 }));

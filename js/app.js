@@ -1,6 +1,8 @@
 import { checkAuth, logout } from './config/supabaseClient.js';
 import { generarSeccion } from './config/grokClient.js';
-import { buscarCompetencia, obtenerGrados, obtenerAreasPorGrado, agruparGradosPorNivel } from './services/curriculumService.js';
+import {
+  buscarCompetencia, obtenerGrados, obtenerAreasPorGrado, agruparGradosPorNivel, sugerirCompetencias,
+} from './services/curriculumService.js';
 import { validarFormulario } from './services/validation.js';
 import { descargarDocx } from './services/documentGenerator.js';
 import { renderizarPlan, mostrarLoading, mostrarError, limpiarError } from './ui/resultsRenderer.js';
@@ -12,18 +14,18 @@ let ultimoPlan = null;
 async function generarPlan(datos) {
   const competenciaData = await buscarCompetencia(datos.grado, datos.area, datos.competencia);
 
-  const actividades = await Promise.all(
-    PASOS_DISENO.map((paso) =>
-      generarSeccion({
-        grado: datos.grado,
-        area: datos.area,
-        competencia: competenciaData.texto,
-        indicadores: competenciaData.indicadores,
-        etapa: ETAPAS.PASO,
-        paso,
-      })
-    )
-  );
+  const actividades = [];
+  for (const paso of PASOS_DISENO) {
+    actividades.push(await generarSeccion({
+      grado: datos.grado,
+      area: datos.area,
+      competencia: competenciaData.texto,
+      indicadores: competenciaData.indicadores,
+      etapa: ETAPAS.PASO,
+      paso,
+      adecuacionNEE: datos.adecuacionNEE,
+    }));
+  }
 
   const rubrica = await generarSeccion({
     grado: datos.grado,
@@ -31,6 +33,7 @@ async function generarPlan(datos) {
     competencia: competenciaData.texto,
     indicadores: competenciaData.indicadores,
     etapa: ETAPAS.RUBRICA,
+    adecuacionNEE: datos.adecuacionNEE,
   });
 
   return {
@@ -38,10 +41,43 @@ async function generarPlan(datos) {
     area: datos.area,
     competencia: competenciaData.texto,
     indicadores: competenciaData.indicadores,
+    adecuacionNEE: datos.adecuacionNEE,
     actividades,
     rubrica,
     fecha: new Date().toLocaleDateString('es-GT'),
   };
+}
+
+function debounce(fn, ms) {
+  let temporizador;
+  return (...args) => {
+    clearTimeout(temporizador);
+    temporizador = setTimeout(() => fn(...args), ms);
+  };
+}
+
+async function actualizarSugerencias() {
+  const grado = document.getElementById('grado').value;
+  const area = document.getElementById('area').value;
+  const texto = document.getElementById('competencia').value;
+  const lista = document.getElementById('competenciaSugerencias');
+
+  const sugerencias = await sugerirCompetencias(grado, area, texto);
+  lista.textContent = '';
+  if (!sugerencias.length) {
+    lista.classList.add('hidden');
+    return;
+  }
+  sugerencias.forEach((texto_completo) => {
+    const li = document.createElement('li');
+    li.textContent = texto_completo;
+    li.addEventListener('click', () => {
+      document.getElementById('competencia').value = texto_completo;
+      lista.classList.add('hidden');
+    });
+    lista.appendChild(li);
+  });
+  lista.classList.remove('hidden');
 }
 
 async function poblarGrados() {
@@ -108,6 +144,16 @@ async function init() {
     poblarAreas(e.target.value);
   });
 
+  const sugerenciasLista = document.getElementById('competenciaSugerencias');
+  const competenciaInput = document.getElementById('competencia');
+  const sugerenciasDebounced = debounce(actualizarSugerencias, 300);
+  competenciaInput.addEventListener('input', sugerenciasDebounced);
+  document.addEventListener('click', (e) => {
+    if (e.target !== competenciaInput && !sugerenciasLista.contains(e.target)) {
+      sugerenciasLista.classList.add('hidden');
+    }
+  });
+
   document.getElementById('formGenerar').addEventListener('submit', async (e) => {
     e.preventDefault();
     limpiarError();
@@ -118,6 +164,7 @@ async function init() {
         grado: document.getElementById('grado').value,
         area: document.getElementById('area').value,
         competencia: document.getElementById('competencia').value,
+        adecuacionNEE: document.getElementById('adecuacionNEE').checked,
       });
     } catch (err) {
       mostrarError(err.message);

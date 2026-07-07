@@ -1,7 +1,8 @@
 import {
   CRITERIOS_AUTOEVALUACION, PREGUNTAS_REFLEXION, CRITERIOS_COEVALUACION, ESCALA_COEVALUACION,
 } from '../services/evaluationSheets.js';
-import { PASOS_DISENO, NOMBRE_PASO, ICONO_PASO } from '../prompts/promptTemplates.js';
+import { PASOS_DISENO, NOMBRE_PASO } from '../prompts/promptTemplates.js';
+import { crearIconoPaso } from './icons.js';
 
 function conScroll(tabla) {
   const wrap = document.createElement('div');
@@ -58,7 +59,7 @@ function crearActividadDiseno(paso, act) {
 
   const badge = document.createElement('div');
   badge.className = 'plan-paso-badge';
-  badge.textContent = ICONO_PASO[paso] || '';
+  badge.appendChild(crearIconoPaso(paso));
   header.appendChild(badge);
 
   const tituloWrap = document.createElement('div');
@@ -362,6 +363,16 @@ export function renderizarPlan(plan) {
   const titulo = document.createElement('h1');
   titulo.textContent = 'Plan de Clase';
   banner.appendChild(titulo);
+  const narrativa = document.createElement('p');
+  narrativa.className = 'plan-banner-narrativa';
+  narrativa.textContent = `Hoy eres un diseñador de soluciones: tu misión es resolver un reto real relacionado con "${(plan.competencia || '').slice(0, 90)}${(plan.competencia || '').length > 90 ? '…' : ''}" siguiendo el proceso de diseño paso a paso.`;
+  banner.appendChild(narrativa);
+  if (plan.adecuacionNEE) {
+    const badgeNEE = document.createElement('span');
+    badgeNEE.className = 'plan-banner-kicker plan-banner-nee';
+    badgeNEE.textContent = 'Incluye adecuación curricular NEE';
+    banner.appendChild(badgeNEE);
+  }
   contenedor.appendChild(banner);
 
   contenedor.appendChild(crearEncabezado(plan));
