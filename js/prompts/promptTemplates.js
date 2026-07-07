@@ -23,3 +23,11 @@ export const ICONO_PASO = {
   crear: '🛠️',
   compartir: '📣',
 };
+
+export const COLOR_PASO = {
+  explorar: '#6d28d9',
+  sintetizar: '#059669',
+  imaginar: '#ea580c',
+  crear: '#2563eb',
+  compartir: '#db2777',
+};

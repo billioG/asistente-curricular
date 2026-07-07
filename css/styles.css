@@ -147,6 +147,32 @@ select:focus, textarea:focus, input:focus {
   border: 1px solid var(--color-border);
 }
 
+.plan-banner {
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  color: #fff;
+  border-radius: 1rem;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.plan-banner-kicker {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: rgba(255, 255, 255, 0.18);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  margin-bottom: 0.75rem;
+}
+
+.plan-banner h1 {
+  font-size: 1.5rem;
+  margin: 0;
+  color: #fff;
+}
+
 .plan-seccion {
   margin-bottom: 1.5rem;
   padding-bottom: 1.25rem;
@@ -179,16 +205,52 @@ select:focus, textarea:focus, input:focus {
 }
 
 .plan-paso {
-  background: var(--color-bg);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-primary);
   border-radius: 0.75rem;
-  padding: 1rem;
+  padding: 1rem 1.1rem;
   margin-bottom: 1rem;
+}
+
+.plan-paso[data-paso="explorar"] { border-left-color: #6d28d9; }
+.plan-paso[data-paso="sintetizar"] { border-left-color: #059669; }
+.plan-paso[data-paso="imaginar"] { border-left-color: #ea580c; }
+.plan-paso[data-paso="crear"] { border-left-color: #2563eb; }
+.plan-paso[data-paso="compartir"] { border-left-color: #db2777; }
+
+.plan-paso-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.plan-paso-badge {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.plan-paso-etiqueta {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-muted);
 }
 
 .plan-paso h3 {
   font-size: 0.95rem;
-  color: var(--color-primary);
-  margin: 0 0 0.5rem;
+  color: var(--color-text);
+  margin: 0.1rem 0 0;
 }
 
 .plan-paso p { margin: 0.35rem 0; font-size: 0.9rem; }
@@ -402,4 +464,21 @@ select:focus, textarea:focus, input:focus {
   color: var(--color-muted);
   font-size: 1.1rem;
   line-height: 1;
+}
+
+/* Exportación a PDF vía impresión del navegador */
+@media print {
+  body * { visibility: hidden; }
+  #planContent, #planContent * { visibility: visible; }
+  #planContent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+  .tabla-scroll { overflow: visible; }
+  .tabla-scroll table { min-width: 0; }
+  .plan-paso, .plan-seccion, .hoja-evaluacion { break-inside: avoid; }
+  .plan-banner { background: var(--color-primary-dark) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .plan-paso { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }

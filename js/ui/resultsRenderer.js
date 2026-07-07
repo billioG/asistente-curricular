@@ -51,10 +51,29 @@ function crearLista(items) {
 function crearActividadDiseno(paso, act) {
   const wrap = document.createElement('div');
   wrap.className = 'plan-paso';
+  wrap.dataset.paso = paso;
 
-  const h3 = document.createElement('h3');
-  h3.textContent = `${ICONO_PASO[paso] || ''} ${NOMBRE_PASO[paso] || paso}${act.titulo ? ` — ${act.titulo}` : ''}`;
-  wrap.appendChild(h3);
+  const header = document.createElement('div');
+  header.className = 'plan-paso-header';
+
+  const badge = document.createElement('div');
+  badge.className = 'plan-paso-badge';
+  badge.textContent = ICONO_PASO[paso] || '';
+  header.appendChild(badge);
+
+  const tituloWrap = document.createElement('div');
+  const etiqueta = document.createElement('span');
+  etiqueta.className = 'plan-paso-etiqueta';
+  etiqueta.textContent = NOMBRE_PASO[paso] || paso;
+  tituloWrap.appendChild(etiqueta);
+  if (act.titulo) {
+    const h3 = document.createElement('h3');
+    h3.textContent = act.titulo;
+    tituloWrap.appendChild(h3);
+  }
+  header.appendChild(tituloWrap);
+
+  wrap.appendChild(header);
 
   if (act.objetivo) {
     const p = document.createElement('p');
@@ -334,9 +353,16 @@ export function renderizarPlan(plan) {
   const contenedor = document.getElementById('planContent');
   contenedor.textContent = '';
 
+  const banner = document.createElement('div');
+  banner.className = 'plan-banner';
+  const kicker = document.createElement('span');
+  kicker.className = 'plan-banner-kicker';
+  kicker.textContent = 'Generador de Planes CNB';
+  banner.appendChild(kicker);
   const titulo = document.createElement('h1');
   titulo.textContent = 'Plan de Clase';
-  contenedor.appendChild(titulo);
+  banner.appendChild(titulo);
+  contenedor.appendChild(banner);
 
   contenedor.appendChild(crearEncabezado(plan));
 

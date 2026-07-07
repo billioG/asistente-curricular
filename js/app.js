@@ -142,6 +142,10 @@ async function init() {
   document.getElementById('btnDescargar').addEventListener('click', () => {
     if (ultimoPlan) descargarDocx(ultimoPlan);
   });
+
+  document.getElementById('btnDescargarPdf').addEventListener('click', () => {
+    if (ultimoPlan) window.print();
+  });
 }
 
 init();
