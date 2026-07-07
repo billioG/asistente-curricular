@@ -42,6 +42,12 @@ create table if not exists planes (
   precio numeric
 );
 
+alter table planes enable row level security;
+
+create policy "Usuarios autenticados pueden leer planes"
+  on planes for select
+  using (auth.role() = 'authenticated');
+
 -- Relación usuario-plan
 create table if not exists usuario_plan (
   user_id uuid references auth.users(id) not null,
