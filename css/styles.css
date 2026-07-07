@@ -101,6 +101,12 @@ h1 { font-size: 1.25rem; margin: 0; }
   background: var(--color-bg);
 }
 
+.campo-hint {
+  margin: 0.375rem 0 0;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
 label {
   display: block;
   font-weight: 600;
@@ -479,8 +485,8 @@ select:focus, textarea:focus, input:focus {
 
 .hoja-tabla-coeval td:first-child, .hoja-tabla-coeval th:first-child { text-align: left; }
 
-/* Mago guardián */
-.mago-wrap {
+/* Quetzal guía */
+.quetzal-wrap {
   position: fixed;
   right: 1rem;
   bottom: 1rem;
@@ -491,7 +497,7 @@ select:focus, textarea:focus, input:focus {
   gap: 0.5rem;
 }
 
-.mago-btn {
+.quetzal-btn {
   width: 56px;
   height: 56px;
   min-width: 56px;
@@ -504,9 +510,9 @@ select:focus, textarea:focus, input:focus {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.mago-btn img { width: 100%; height: 100%; }
+.quetzal-btn img { width: 100%; height: 100%; }
 
-.mago-burbuja {
+.quetzal-burbuja {
   position: relative;
   max-width: 240px;
   background: var(--color-surface);
@@ -517,7 +523,7 @@ select:focus, textarea:focus, input:focus {
   box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
-.mago-cerrar {
+.quetzal-cerrar {
   position: absolute;
   top: 0.25rem;
   right: 0.25rem;
