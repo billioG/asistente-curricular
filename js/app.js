@@ -5,22 +5,22 @@ import { validarFormulario } from './services/validation.js';
 import { descargarDocx } from './services/documentGenerator.js';
 import { renderizarPlan, mostrarLoading, mostrarError, limpiarError } from './ui/resultsRenderer.js';
 import { actualizarMago, initMago } from './ui/magoUI.js';
-import { ETAPAS, MOMENTOS } from './prompts/promptTemplates.js';
+import { ETAPAS, SESIONES } from './prompts/promptTemplates.js';
 
 let ultimoPlan = null;
 
 async function generarPlan(datos) {
   const competenciaData = await buscarCompetencia(datos.grado, datos.area, datos.competencia);
 
-  const actividades = await Promise.all(
-    MOMENTOS.map((momento) =>
+  const sesiones = await Promise.all(
+    SESIONES.map((sesion) =>
       generarSeccion({
         grado: datos.grado,
         area: datos.area,
         competencia: competenciaData.texto,
         indicadores: competenciaData.indicadores,
-        etapa: ETAPAS.ACTIVIDAD,
-        momento,
+        etapa: ETAPAS.SESION,
+        sesion,
       })
     )
   );
@@ -38,7 +38,7 @@ async function generarPlan(datos) {
     area: datos.area,
     competencia: competenciaData.texto,
     indicadores: competenciaData.indicadores,
-    actividades,
+    sesiones,
     rubrica,
     fecha: new Date().toLocaleDateString('es-GT'),
   };

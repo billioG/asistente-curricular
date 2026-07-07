@@ -2,8 +2,14 @@
 // para evitar exponer lógica de negocio y prevenir inyección de prompt desde el cliente.
 
 export const ETAPAS = {
-  ACTIVIDAD: 'actividad',
+  SESION: 'sesion',
   RUBRICA: 'rubrica',
 };
 
-export const MOMENTOS = ['motivacion', 'desarrollo_activo', 'refuerzo_valores', 'cierre_evaluacion'];
+export const SESIONES = [1, 2, 3];
+
+export const ENFOQUE_SESION = {
+  1: 'Inicio + Concreto',
+  2: 'Pictórico + Práctica Guiada',
+  3: 'Abstracto + Cierre',
+};

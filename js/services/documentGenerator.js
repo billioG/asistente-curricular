@@ -5,13 +5,6 @@ import {
   CRITERIOS_AUTOEVALUACION, PREGUNTAS_REFLEXION, CRITERIOS_COEVALUACION, ESCALA_COEVALUACION,
 } from './evaluationSheets.js';
 
-const NOMBRE_MOMENTO = {
-  motivacion: 'Motivación',
-  desarrollo_activo: 'Desarrollo Activo',
-  refuerzo_valores: 'Refuerzo de Valores',
-  cierre_evaluacion: 'Cierre y Evaluación',
-};
-const ORDEN_MOMENTOS = ['motivacion', 'desarrollo_activo', 'refuerzo_valores', 'cierre_evaluacion'];
 const LINEA_ESCRITURA = '_'.repeat(70);
 
 function celda(texto, opts = {}) {
@@ -36,18 +29,32 @@ function listaParrafos(items) {
   return (items || []).map((item) => new Paragraph({ text: `• ${item}` }));
 }
 
-function bloqueActividad(momento, act) {
-  const children = [
-    new Paragraph({ text: `${NOMBRE_MOMENTO[momento] || momento} — ${act.titulo || ''}`, heading: HeadingLevel.HEADING_2 }),
+function tablaPasos(pasos) {
+  const encabezado = new TableRow({
+    children: ['Tiempo', 'Acción del Maestro', 'Acción del Estudiante', 'Propósito'].map(
+      (titulo, i) => celda(titulo, { bold: true, size: i === 0 ? 10 : 30 })
+    ),
+  });
+  const filas = (pasos || []).map(
+    (paso) => new TableRow({
+      children: [
+        celda(paso.tiempo, { size: 10 }),
+        celda(paso.accionMaestro, { size: 30 }),
+        celda(paso.accionEstudiante, { size: 30 }),
+        celda(paso.proposito, { size: 30 }),
+      ],
+    })
+  );
+  return new Table({ width: { size: 100, type: WidthType.PERCENTAGE }, rows: [encabezado, ...filas] });
+}
+
+function bloqueSesion(numero, sesionData) {
+  const titulo = `Sesión ${numero} — ${sesionData.enfoque || ''}${sesionData.titulo ? `: ${sesionData.titulo}` : ''}`;
+  return [
+    new Paragraph({ text: titulo, heading: HeadingLevel.HEADING_2 }),
+    tablaPasos(sesionData.pasos),
+    new Paragraph({ text: '' }),
   ];
-  if (act.objetivo) children.push(new Paragraph({ text: `Objetivo: ${act.objetivo}` }));
-  if (act.descripcion) children.push(new Paragraph({ text: `Descripción: ${act.descripcion}` }));
-  if (Array.isArray(act.recursos) && act.recursos.length) {
-    children.push(new Paragraph({ text: 'Recursos:' }));
-    children.push(...listaParrafos(act.recursos));
-  }
-  if (act.duracionMinutos) children.push(new Paragraph({ text: `Duración: ${act.duracionMinutos} min` }));
-  return children;
 }
 
 function tablaRubrica(rubrica) {
@@ -176,10 +183,10 @@ export async function descargarDocx(plan) {
     children.push(...listaParrafos(plan.indicadores));
   }
 
-  if (plan.actividades) {
-    children.push(new Paragraph({ text: 'Secuencia Didáctica', heading: HeadingLevel.HEADING_1 }));
-    ORDEN_MOMENTOS.forEach((momento, i) => {
-      if (plan.actividades[i]) children.push(...bloqueActividad(momento, plan.actividades[i]));
+  if (plan.sesiones && plan.sesiones.length) {
+    children.push(new Paragraph({ text: 'Secuencia Semanal (3 Sesiones de 40 min)', heading: HeadingLevel.HEADING_1 }));
+    plan.sesiones.forEach((sesionData, i) => {
+      if (sesionData) children.push(...bloqueSesion(i + 1, sesionData));
     });
   }
 
