@@ -24,5 +24,5 @@ Ejecutar `supabase/schema.sql` en el proyecto de Supabase (incluye RLS).
 - CSP, headers de seguridad y RLS configurados por defecto.
 - Rate limiting mensual por usuario vía tabla `uso_api`.
 
-## Mago Guardián
-Asistente visual en `js/ui/magoUI.js` + `assets/mago/*.svg`. Reacciona a estados (normal/pensando/feliz/error) y cambia mensaje según grado seleccionado. Sin dependencias externas, SVG puro.
+## Quetzal Guía
+Asistente visual en `js/ui/quetzalUI.js` + `assets/quetzal/*.svg`. Reacciona a estados (normal/pensando/feliz/error) y cambia mensaje según grado seleccionado. Sin dependencias externas, SVG puro.

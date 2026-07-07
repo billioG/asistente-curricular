@@ -33,8 +33,9 @@
 
       <div class="form-group campo-con-sugerencias">
         <label for="competencia">Competencia de Grado</label>
-        <textarea id="competencia" name="competencia" rows="3" required maxlength="500" placeholder="Ej: Redacta textos narrativos breves..." autocomplete="off"></textarea>
+        <textarea id="competencia" name="competencia" rows="3" required maxlength="500" placeholder="Selecciona grado y área primero" autocomplete="off" disabled></textarea>
         <ul id="competenciaSugerencias" class="sugerencias-lista hidden"></ul>
+        <p class="campo-hint">Escribe al menos 3 letras para ver sugerencias del CNB.</p>
       </div>
 
       <div class="form-group form-group-check">
@@ -67,13 +68,13 @@
   </section>
 </main>
 
-<div id="magoWrap" class="mago-wrap">
-  <button id="magoToggle" class="mago-btn" aria-label="Mostrar consejos del mago guardián" aria-expanded="false">
-    <img src="assets/mago/mago_normal.svg" alt="" id="magoAvatar" width="44" height="44">
+<div id="quetzalWrap" class="quetzal-wrap">
+  <button id="quetzalToggle" class="quetzal-btn" aria-label="Mostrar consejos del quetzal guía" aria-expanded="false">
+    <img src="assets/quetzal/quetzal_normal.svg" alt="" id="quetzalAvatar" width="44" height="44">
   </button>
-  <div id="magoBurbuja" class="mago-burbuja hidden" role="status" aria-live="polite">
-    <p id="magoTexto">Hola, soy tu guía del CNB. ¿Qué clase preparamos hoy?</p>
-    <button id="magoCerrar" class="mago-cerrar" aria-label="Cerrar mensaje">×</button>
+  <div id="quetzalBurbuja" class="quetzal-burbuja hidden" role="status" aria-live="polite">
+    <p id="quetzalTexto">Hola, soy tu quetzal guía del CNB. ¿Qué clase preparamos hoy?</p>
+    <button id="quetzalCerrar" class="quetzal-cerrar" aria-label="Cerrar mensaje">×</button>
   </div>
 </div>
 

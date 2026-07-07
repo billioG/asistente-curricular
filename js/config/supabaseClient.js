@@ -8,7 +8,7 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 }
 
 // Placeholder evita que createClient('', '') lance de forma síncrona y rompa
-// la carga del módulo (y con ella, toda la UI, incluido el mago guardián)
+// la carga del módulo (y con ella, toda la UI, incluido el quetzal guía)
 // cuando aún no se han inyectado las credenciales.
 export const supabase = createClient(SUPABASE_URL || 'https://placeholder.supabase.co', SUPABASE_ANON_KEY || 'placeholder');
 

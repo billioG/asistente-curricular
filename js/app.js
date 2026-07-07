@@ -6,7 +6,7 @@ import {
 import { validarFormulario } from './services/validation.js';
 import { descargarDocx } from './services/documentGenerator.js';
 import { renderizarPlan, mostrarLoading, mostrarError, limpiarError } from './ui/resultsRenderer.js';
-import { actualizarMago, initMago } from './ui/magoUI.js';
+import { actualizarQuetzal, initQuetzal } from './ui/quetzalUI.js';
 import { ETAPAS, PASOS_DISENO } from './prompts/promptTemplates.js';
 
 let ultimoPlan = null;
@@ -125,7 +125,7 @@ async function poblarAreas(grado) {
 }
 
 async function init() {
-  initMago();
+  initQuetzal();
 
   let user;
   try {
@@ -140,12 +140,30 @@ async function init() {
 
   poblarGrados();
 
-  document.getElementById('grado').addEventListener('change', (e) => {
-    poblarAreas(e.target.value);
-  });
-
   const sugerenciasLista = document.getElementById('competenciaSugerencias');
   const competenciaInput = document.getElementById('competencia');
+
+  function bloquearCompetencia() {
+    competenciaInput.value = '';
+    competenciaInput.disabled = true;
+    competenciaInput.placeholder = 'Selecciona grado y área primero';
+    sugerenciasLista.classList.add('hidden');
+  }
+
+  document.getElementById('grado').addEventListener('change', (e) => {
+    poblarAreas(e.target.value);
+    bloquearCompetencia();
+  });
+
+  document.getElementById('area').addEventListener('change', (e) => {
+    if (e.target.value) {
+      competenciaInput.disabled = false;
+      competenciaInput.placeholder = 'Ej: Redacta textos narrativos breves...';
+    } else {
+      bloquearCompetencia();
+    }
+  });
+
   const sugerenciasDebounced = debounce(actualizarSugerencias, 300);
   competenciaInput.addEventListener('input', sugerenciasDebounced);
   document.addEventListener('click', (e) => {
@@ -172,15 +190,15 @@ async function init() {
     }
 
     mostrarLoading(true);
-    actualizarMago('pensando');
+    actualizarQuetzal('pensando');
 
     try {
       ultimoPlan = await generarPlan(datos);
       renderizarPlan(ultimoPlan);
-      actualizarMago('feliz');
+      actualizarQuetzal('feliz');
     } catch (err) {
       mostrarError(err.message);
-      actualizarMago('error');
+      actualizarQuetzal('error');
     } finally {
       mostrarLoading(false);
     }
