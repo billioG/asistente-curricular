@@ -68,7 +68,12 @@ const FUNCION_PASO = {
   compartir: 'Comunicar la solución diseñada a una audiencia real (compañeros, familia, comunidad) de forma clara y convincente, explicando el problema, la solución y por qué funciona.',
 };
 
-const INSTRUCCION_NEE = 'Este estudiante requiere una adecuación curricular de acceso para Necesidades Educativas Especiales (NEE), siguiendo los lineamientos del CNB de Guatemala: usa lenguaje simple y directo, apoyos visuales o sensoriales concretos, tiempo flexible, y ofrece una forma alternativa de participar o demostrar el aprendizaje (oral, gráfica o manipulativa) además de la tarea estándar. La competencia y el nivel de exigencia se mantienen, solo se adapta el acceso.';
+const PRINCIPIOS_DUA = `Aplica principios de Diseño Universal para el Aprendizaje (DUA 3.0), pensando en la variabilidad de todo el grupo desde el diseño y no como adaptación posterior para un solo estudiante:
+- Compromiso: conecta la tarea con la vida cotidiana o los intereses del estudiante, o dale una elección real y concreta (por ejemplo, entre dos enfoques, roles o formatos) para motivar su participación.
+- Representación: en "recursos" ofrece al menos dos formas distintas de acceder al contenido (por ejemplo, imagen o video además de texto, o un apoyo visual/concreto), para que ningún estudiante dependa de un único canal.
+- Acción y expresión: en "tarea" ofrece explícitamente al menos una forma alternativa válida de completar o mostrar el trabajo (oral, gráfica, escrita o manipulativa) además de la opción por defecto.`;
+
+const INSTRUCCION_NEE = 'Este estudiante requiere además una adecuación curricular de acceso reforzada para Necesidades Educativas Especiales (NEE), siguiendo los lineamientos del CNB de Guatemala: usa lenguaje simple y directo, apoyos visuales o sensoriales concretos adicionales, y tiempo flexible. La competencia y el nivel de exigencia se mantienen, solo se refuerza el acceso.';
 
 function construirPromptPaso({ grado, area, competencia, paso, indicadores, adecuacionNEE }) {
   const nombre = NOMBRE_PASO[paso];
@@ -82,6 +87,7 @@ Reglas obligatorias:
 - La tarea debe usar el cuaderno de diseño del estudiante (donde anota, dibuja o escribe) y dar pasos concretos y accionables, nunca instrucciones vagas.
 - El objetivo y la tarea deben ser distintos y avanzar respecto a los otros 4 pasos; nunca repitas el mismo contenido genérico en todos.
 - La duración debe ser realista para un período de clase (10 a 20 minutos por paso).
+- ${PRINCIPIOS_DUA}
 ${adecuacionNEE ? `- ${INSTRUCCION_NEE}` : ''}
 
 Responde en JSON con las claves: titulo (string breve), objetivo (string específico de este paso), tarea (string con las instrucciones detalladas para el estudiante), recursos (array de strings) y duracionMinutos (number).`;
@@ -94,7 +100,8 @@ Reglas obligatorias:
 - Cada criterio debe tener un peso (porcentaje) y la suma de todos los pesos debe ser 100.
 - Cada nivel (excelente, logrado, en_proceso, inicial) debe describir de forma concreta y observable qué hace el estudiante en ese nivel, evitando frases genéricas como "cumple" o "no cumple".
 - Incluye criterios que evalúen tanto el dominio conceptual/técnico de la competencia como habilidades transversales relevantes (trabajo colaborativo, comunicación, pensamiento crítico, creatividad) cuando la competencia lo permita.
-${adecuacionNEE ? `- ${INSTRUCCION_NEE} Los descriptores de los niveles deben reflejar formas alternativas válidas de demostrar el logro.` : ''}
+- Siguiendo principios de Diseño Universal para el Aprendizaje (DUA 3.0), los descriptores de cada nivel deben admitir formas alternativas válidas de demostrar el logro (oral, gráfica, escrita o manipulativa), no una única forma fija, para reflejar la variabilidad de todo el grupo desde el diseño.
+${adecuacionNEE ? `- ${INSTRUCCION_NEE}` : ''}
 
 Responde con la clave "criterios": un array de 3 a 5 objetos, cada uno con: criterio (string), peso (number, porcentaje), excelente (string), logrado (string), en_proceso (string), inicial (string).`;
 }
