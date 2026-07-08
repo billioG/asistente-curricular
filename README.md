@@ -6,7 +6,7 @@ App mobile-first para generar planes de clase alineados al CNB usando IA (Groq /
 - Frontend: HTML/CSS/JS vanilla, sin frameworks
 - Datos/Auth: Supabase (Postgres + pgvector + Auth)
 - IA: Groq (modelo llama-3.3-70b-versatile), llamado solo desde backend (Netlify Function) — la API key nunca llega al navegador
-- Hosting: Netlify
+- Hosting: Netlify, deploy automático desde la rama `main` de este repo (no desplegar desde copias locales sueltas ni con `netlify deploy` manual — puede pisar producción con código desactualizado)
 
 ## Setup local
 1. `npm install`
